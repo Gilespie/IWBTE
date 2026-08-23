@@ -9,6 +9,7 @@ public class GroundMovement : MonoBehaviour
     protected float _currentSpeed;
 
     [SerializeField] protected float _inputSmoothSpeed = 8f;
+    [SerializeField] CharacterColliderResizer _characterColliderResizer;
 
     [Header("Acceleration")]
     [SerializeField] protected float _acceleration = 10f;
@@ -23,6 +24,11 @@ public class GroundMovement : MonoBehaviour
     protected Vector3 _smoothedDirection;
     public Vector3 SmoothedDirection => _smoothedDirection;
 
+    void Awake()
+    {
+        _characterColliderResizer.InitDefault();
+    }
+
     protected void UpdateSpeed(bool hasInput, float speed)
     {
         float targetSpeed = hasInput ? speed : 0f;
@@ -34,6 +40,26 @@ public class GroundMovement : MonoBehaviour
     public virtual void Jump()
     {
         _rb.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
+    }
+
+    public void Crouch()
+    {
+        _characterColliderResizer.SetSize(1f, new Vector3(0, 0.5f, 0));
+    }
+
+    public void Uncrouch()
+    {
+        _characterColliderResizer.SetSize(2f, new Vector3(0, 1f, 0));
+    }
+
+    public void Sprint()
+    {
+
+    }
+
+    public void Unsprint()
+    {
+
     }
 
     /*public void Advance(Vector3 dir)

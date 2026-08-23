@@ -6,4 +6,5 @@ public class SaveGameData
     public float z;
     public bool IsAlive;
     public string СurrentSceneName;
+    public bool IsNewGame;
 }
