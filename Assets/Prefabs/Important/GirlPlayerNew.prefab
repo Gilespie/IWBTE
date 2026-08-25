@@ -541,9 +541,7 @@ MonoBehaviour:
   _animationController: {fileID: 1695469387727456910}
   _inputController: {fileID: 7098276169393459309}
   _groundRaycast: {fileID: 8844264849354902168}
-  _slopeRaycast: {fileID: 5766043342286817258}
-  _interactRaycast: {fileID: 4266772315595637284}
-  _pushingRaycast: {fileID: 4020815293351065419}
+  _interactRaycast: {fileID: 968080608149833084}
   _canStandUpRaycast: {fileID: 4293844731597300167}
   _rb: {fileID: 8564188899227085595}
   _movements:
@@ -558,7 +556,6 @@ MonoBehaviour:
   _col: {fileID: 7656462890522885222}
   _characterColliderResizer: {fileID: 8690230440770882156}
   _fallDamage: {fileID: 5299855088566036702}
-  _inputDisabler: {fileID: 8993313878585902781}
   _headPoint: {fileID: 4768217149248957829}
   _view: {fileID: 7202939486560137076}
   _slideMaterial: {fileID: 13400000, guid: 1eb94a61eb6e7be41866ae1a20a32251, type: 2}
@@ -574,7 +571,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20425b05c7c17d543ad271b8531d0595, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speedRot: 10
+  _speedRot: 5
   _mesh: {fileID: 7627275559615777486}
 --- !u!114 &8690230440770882156
 MonoBehaviour:
@@ -602,6 +599,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedMovement: 5
+  _inputSmoothSpeed: 8
   _acceleration: 3
   _deceleration: 5
   _jumpForce: 9
@@ -618,6 +616,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedMovement: 2
+  _inputSmoothSpeed: 8
   _acceleration: 5
   _deceleration: 4.63
   _jumpForce: 0
@@ -647,6 +646,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedMovement: 2
+  _inputSmoothSpeed: 8
   _acceleration: 5
   _deceleration: 10
   _jumpForce: 0
@@ -663,6 +663,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedMovement: 3
+  _inputSmoothSpeed: 8
   _acceleration: 5
   _deceleration: 8
   _jumpForce: 7
@@ -678,12 +679,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5980eff1c24fbc84ca7a90b5a3c77d11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _jumpKey: 32
-  _sprintKey: 304
-  _crouchKey: 306
-  _interactKey: 101
-  _pushingKey: 102
-  _pauseKey: 27
 --- !u!114 &3743519128702471943
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -697,6 +692,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedMovement: 2
+  _inputSmoothSpeed: 8
   _acceleration: 1
   _deceleration: 5
   _jumpForce: 0
@@ -713,11 +709,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speedMovement: 5
+  _inputSmoothSpeed: 8
   _acceleration: 10
   _deceleration: 10
   _jumpForce: 0
-  _slopeRaycast: {fileID: 5766043342286817258}
+  _groundRaycast: {fileID: 0}
   _maxSlideSpeed: 6
+  _slideAcceleration: 4
 --- !u!114 &5299855088566036702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7241,11 +7239,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7627275559615777486}
   - component: {fileID: 8844264849354902168}
-  - component: {fileID: 2309247834474945246}
-  - component: {fileID: 4266772315595637284}
-  - component: {fileID: 5766043342286817258}
-  - component: {fileID: 4020815293351065419}
   - component: {fileID: 4293844731597300167}
+  - component: {fileID: 968080608149833084}
   m_Layer: 0
   m_Name: Main
   m_TagString: Untagged
@@ -7285,80 +7280,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _originPoint: {fileID: 7389435303743518524}
-  _rayDistance: 0.4
+  _rayDistance: 0.2
+  _radius: 0.05
   _affectedLayer:
     serializedVersion: 2
-    m_Bits: 1074073159
---- !u!114 &2309247834474945246
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4090260291122005548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d018bda357048694993f76c52278ff80, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _originPoint: {fileID: 7389435303743518524}
-  _rayDistance: 0.3
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 1074101879
---- !u!114 &4266772315595637284
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4090260291122005548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec907ef54a976a34a8b1225468a52a7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _originPoint: {fileID: 5891578288722125676}
-  _rayDistance: 3
-  _affectedLayer:
-    serializedVersion: 2
-    m_Bits: 512
-  _intRadius: 0.2
---- !u!114 &5766043342286817258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4090260291122005548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8197f8af8d67fb94d9c4d748641403d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _originPoint: {fileID: 7389435303743518524}
-  _rayDistance: 1
-  _affectedLayer:
+    m_Bits: 1074077255
+  _maxSlopeAngle: 25
+  _slopeLayerMask:
     serializedVersion: 2
     m_Bits: 4096
-  _maxSlopeAngle: -28
---- !u!114 &4020815293351065419
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4090260291122005548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4ee01d73e4da9d4b81d703a69d35270, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _originPoint: {fileID: 5891578288722125676}
-  _rayDistance: 1
-  _affectedLayer:
-    serializedVersion: 2
-    m_Bits: 2048
 --- !u!114 &4293844731597300167
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7376,6 +7306,24 @@ MonoBehaviour:
   _obstacleMask:
     serializedVersion: 2
     m_Bits: 1074126455
+--- !u!114 &968080608149833084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4090260291122005548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8977128fcf839343855495624c82753, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _originPoint: {fileID: 5891578288722125676}
+  _rayDistance: 1
+  _radius: 0.1
+  _affectedLayer:
+    serializedVersion: 2
+    m_Bits: 2560
 --- !u!1 &4116780480541761034
 GameObject:
   m_ObjectHideFlags: 0
@@ -17551,6 +17499,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e7c6f997a1ef31b42afa49db0c23e18a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _inputController: {fileID: 7098276169393459309}
 --- !u!114 &5769060549417351852
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17563,7 +17512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec05431b68bf9b34bba7d2bd2ac07b7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _raycast: {fileID: 2309247834474945246}
+  _raycast: {fileID: 8844264849354902168}
   _materials:
   - material: 1
     clip: {fileID: 8300000, guid: 3508e76f0e28bfd408d615e6d82b49b7, type: 3}
@@ -17681,8 +17630,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 889acde282907f340b07b741aa1ddd3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _characterInput: {fileID: 7098276169393459309}
-  _characterRotator: {fileID: 8359462753670115543}
+  _playerAnimator: {fileID: 0}
+  _titleText: {fileID: 0}
 --- !u!114 &5680171641651368466
 MonoBehaviour:
   m_ObjectHideFlags: 0

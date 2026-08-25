@@ -45,7 +45,7 @@ public class Switch : MonoBehaviour, IInteractable
     {
         _isActive = !_isActive;
         _light.color = _isActive ? _colorOn : _colorOff;
-        //_animator.SetBool("isActive", _isActive);
+        _animator.SetBool("isActive", _isActive);
         PlaySound(_sfxOn, _sfxOff);
         ActivateLamp(_isActive);
         _event?.Invoke();

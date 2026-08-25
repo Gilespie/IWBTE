@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class PlayerAvatar : MonoBehaviour
 {
-    private Character _parent;
+    [SerializeField] CharacterInputController _inputController;
+    Character _parent;
 
     void Start()
     {
@@ -27,5 +28,15 @@ public class PlayerAvatar : MonoBehaviour
     public void DeactiveKinematic()
     {
         _parent.DeactivateRBKinematic();
+    }
+
+    public void DisableControl()
+    {
+        _inputController.DisableAllInput();
+    }
+
+    public void EnableControl()
+    {
+        _inputController.EnableMovementMap();
     }
 }

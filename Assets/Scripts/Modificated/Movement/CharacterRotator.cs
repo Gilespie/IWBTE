@@ -6,20 +6,20 @@ public class CharacterRotator : MonoBehaviour
     [SerializeField] private float _speedRot = 10f;
     [SerializeField] private Transform _mesh;
     public Transform Mesh => _mesh;
-    private SlopeRaycast _slopeRaycast;
+    private GroundRaycast _groundRaycast;
     bool _isActive = true;
     private Vector3 _lastSwimForward = Vector3.forward;
 
-    public void Initialize(SlopeRaycast slopeRaycast)
+    public void Initialize(GroundRaycast groundRaycast)
     {
-        _slopeRaycast = slopeRaycast;
+        _groundRaycast = groundRaycast;
     }
 
     public void Rotate(Vector3 dir, Vector3 velocity)
     {
         if (!_isActive) return;
 
-        if (_slopeRaycast.IsRaycasting(-Vector3.up))
+        if (_groundRaycast.IsSlopeTooSteep)
         {
             RotateOnSlope(velocity);
         }
@@ -43,7 +43,7 @@ public class CharacterRotator : MonoBehaviour
 
     private void RotateOnSlope(Vector3 velocity)
     {
-        Vector3 slopeNormal = _slopeRaycast.Normal;
+        Vector3 slopeNormal = _groundRaycast.Normal;
 
         if (velocity.sqrMagnitude < 0.01f)
             return;

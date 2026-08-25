@@ -9,9 +9,7 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
     [SerializeField] CharacterAnimationController _animationController;
     [SerializeField] CharacterInputController _inputController;
     [SerializeField] GroundRaycast _groundRaycast;
-    [SerializeField] SlopeRaycast _slopeRaycast;
-    [SerializeField] InteractRaycast _interactRaycast;
-    [SerializeField] PushingRaycast _pushingRaycast;
+    [SerializeField] ForwardRaycast _interactRaycast;
     [SerializeField] CanStandRaycast _canStandUpRaycast;
     [SerializeField] Rigidbody _rb;
     [SerializeField] MovementAdvance[] _movements;//0 - walk, 1 - sprint, 2 - crouch, 3 - swim, 4 - slope, 5 - push
@@ -47,6 +45,7 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
     PushableBox _currentBox;
     public PushableBox CurrentBox => _currentBox;
     WaterZone _currentWaterZone;
+    private IPushable _currentPushable;
 
 
     void Awake()
@@ -75,16 +74,16 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
 
         _fallDamage.Tick(_isGround, _isSwimming, _isSliding, _rb.linearVelocity.y);
 
-        _isGround = _groundRaycast.IsRaycasting(-Vector3.up);
-        _isSliding = _slopeRaycast.IsRaycasting(-Vector3.up);
-        _isGrab = _pushingRaycast.IsRaycasting(_characterRotator.Mesh.forward);
+        _isGround = _groundRaycast.IsRaycasting(Vector3.down);
+        _isSliding = _groundRaycast.IsSlopeTooSteep;
+        _isGrab = _interactRaycast.IsRaycasting(_characterRotator.Mesh.forward);
         _isOnAir = !_isGround && !_isSwimming;
         _animationController.SetBool(AnimParams.Air, _isOnAir);
         _animationController.SetBool(AnimParams.IsFalling, _isFalling);
 
         _isFalling = _rb.linearVelocity.y < -0.5f && !_isGround && !_isSwimming;
 
-        _rb.maxLinearVelocity = _slopeRaycast.IsRaycasting(-Vector3.up) ? 15f : float.MaxValue;
+        _rb.maxLinearVelocity = _groundRaycast.IsRaycasting(-Vector3.up) ? 15f : float.MaxValue;
 
         if (_currentWaterZone != null)
         {
@@ -101,7 +100,9 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
 
         if (_inputController.IsInteracting)
         {
-            if (_interactRaycast.IsRaycasting(_characterRotator.Mesh.forward))
+            bool isPushableInFront = _interactRaycast.TryGetHit(out IPushable _);
+
+            if (!isPushableInFront && _interactRaycast.TryGetHit(out IInteractable interactable))
             {
                 Pressing();
             }
@@ -142,11 +143,7 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
             _animationController.SetBool(AnimParams.Move, false);
 
         TryStartPush();
-
-        if (_isPushingNow && !_inputController.IsPushing)
-        {
-            StopPush();
-        }
+        TryStopPush();
     }
 
     void FixedUpdate()
@@ -306,8 +303,8 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         _currentMovement.Initialize(_rb);
         _currentMovement.SetSpeed(prevSpeed);
 
-        _characterRotator.Initialize(_slopeRaycast);
-    }
+        _characterRotator.Initialize(_groundRaycast);
+        }
 
     public void SetExternalVelocity(IExternalVelocity velocity)
     {
@@ -370,47 +367,115 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         if (_isPressingNow) return;
 
         _isPressingNow = true;
-
         _animationController.SetTrigger(AnimParams.Press);
-        _interactRaycast.InteractPress();
+
+        if (_interactRaycast.TryGetHit(out IInteractable interactable))
+        {
+            interactable.Interact();
+        }
 
         StartCoroutine(ResetPress());
     }
 
-    void TryStartPush()
+    /*void TryStartPush()
     {
         if (_isPushingNow) return;
 
-        if (_inputController.IsPushing && _isGrab)
+        if (!_inputController.IsPushing || !_isGrab) return;
+
+        _interactRaycast.IsRaycasting(transform.forward);
+
+        if (_interactRaycast.TryGetHit(out IPushable pushable))
         {
-            _pushingRaycast.InteractPress();
+            pushable.Pushing(_interactRaycast);
+            _isPushingNow = true;
+            _currentPushable = pushable;
+        }
+    }*/
+
+    /*
+        public void StartPush(PushableBox box)
+        {
+            if (_isPushingNow) return;
+
+            Debug.Log("Start Pushing");
+
+            _isPushingNow = true;
+            _currentBox = box;
+
+            Vector3 dir = (box.transform.position - transform.position).normalized;
+            dir.y = 0f;
+
+            _characterRotator.Mesh.forward = dir;
+
+            _animationController.SetBool(AnimParams.Push, true);
+        }
+
+        public void StopPush()
+        {
+            if (!_isPushingNow) return;
+            Debug.Log("Stop Pushing");
+            _isPushingNow = false;
+            _currentBox = null;
+
+            _animationController.SetBool(AnimParams.Push, false);
+        }
+
+        void TryStopPush()
+        {
+            if (!_isPushingNow) return;
+
+            if (!_inputController.IsPushing || !_isGrab)
+            {
+                _currentPushable?.StopPushing();
+                _currentPushable = null;
+                _isPushingNow = false;
+            }
+        }*/
+
+    void TryStartPush()
+    {
+        if (_isPushingNow) return;
+        if (!_inputController.IsPushing || !_isGrab) return;
+
+        if (_interactRaycast.TryGetHit(out IPushable pushable))
+        {
+            _currentPushable = pushable;
+            pushable.Pushing(_interactRaycast);
         }
     }
-
 
     public void StartPush(PushableBox box)
     {
         if (_isPushingNow) return;
-
-        Debug.Log("Start Pushing");
 
         _isPushingNow = true;
         _currentBox = box;
 
         Vector3 dir = (box.transform.position - transform.position).normalized;
         dir.y = 0f;
-
         _characterRotator.Mesh.forward = dir;
 
         _animationController.SetBool(AnimParams.Push, true);
     }
 
+    void TryStopPush()
+    {
+        if (!_isPushingNow) return;
+
+        if (!_inputController.IsPushing || !_isGrab)
+        {
+            _currentPushable?.StopPushing();
+        }
+    }
+
     public void StopPush()
     {
         if (!_isPushingNow) return;
-        Debug.Log("Stop Pushing");
+
         _isPushingNow = false;
         _currentBox = null;
+        _currentPushable = null;
 
         _animationController.SetBool(AnimParams.Push, false);
     }

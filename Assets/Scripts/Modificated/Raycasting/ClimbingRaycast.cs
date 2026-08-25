@@ -23,17 +23,4 @@ public class ClimbingRaycast : AbstractRaycast
 
         return _isHitted = false;
     }
-
-    protected override void OnDrawGizmos()
-    {
-        Gizmos.color = _isHitted ? Color.green : Color.red;
-        Gizmos.DrawLine(_ray.origin, _ray.origin + _ray.direction * _rayDistance);
-
-        if (_isHitted)
-        {
-            Gizmos.DrawLine(_hit.point, _hit.point + Vector3.up * _maxHeight);
-        }
-
-        Gizmos.DrawSphere(LedgePoint, 0.1f);
-    }
 }

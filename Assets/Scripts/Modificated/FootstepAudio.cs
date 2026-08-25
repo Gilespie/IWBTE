@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class FootstepAudio : MonoBehaviour
 {
-    [SerializeField] private FootstepRaycast _raycast;
+    [SerializeField] private GroundRaycast _raycast;
     [SerializeField] List<MaterialAudio> _materials;
     [SerializeField] AudioSource _audioSource;
     Dictionary <MaterialType, AudioClip> _materialAudioMap;

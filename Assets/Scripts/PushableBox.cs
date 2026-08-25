@@ -7,7 +7,9 @@ public class PushableBox : MonoBehaviour, IPushable
         return true;
     }*/
 
-    public void Pushing(PushingRaycast interactor)
+    private Character _pushingCharacter;
+
+   /* public void Pushing(PushingRaycast interactor)
     {
         Character pushController = interactor.GetComponentInParent<Character>();
 
@@ -17,6 +19,25 @@ public class PushableBox : MonoBehaviour, IPushable
         {
             pushController.StartPush(this);
         }
+    }*/
+
+    public void Pushing(ForwardRaycast interactor)
+    {
+        if (_pushingCharacter != null) return;
+
+        Character character = interactor.GetComponentInParent<Character>();
+        if (character == null) return;
+
+        _pushingCharacter = character;
+        character.StartPush(this);
+    }
+
+    public void StopPushing()
+    {
+        if (_pushingCharacter == null) return;
+
+        _pushingCharacter.StopPush();
+        _pushingCharacter = null;
     }
 }
 

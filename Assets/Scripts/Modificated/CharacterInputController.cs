@@ -171,6 +171,5 @@ public class CharacterInputController : MonoBehaviour
     void HandleAnyKey(InputAction.CallbackContext context)
     {
         EventManager.Trigger(EventType.OnStartGame);
-        Debug.Log("Started");
     }
 }
