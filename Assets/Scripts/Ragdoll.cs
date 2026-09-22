@@ -3,6 +3,7 @@ using UnityEngine;
 public class Ragdoll : MonoBehaviour
 {
     [SerializeField] private Rigidbody[] _ragdollRBs;
+    [SerializeField] private Collider[] _ragdollColliders;
     [SerializeField] private Animator _animator;
 
     void Start()
@@ -29,17 +30,25 @@ public class Ragdoll : MonoBehaviour
         {
             rb.isKinematic = false;
         }
-
     }
 
     public void DeactivateCollsion()
     {
         Physics.IgnoreLayerCollision(8, 11, true);
-        
+
+        foreach (var col in _ragdollColliders)
+        {
+            col.enabled = false;
+        }
     }
 
     public void ActivateCollision()
     {
         Physics.IgnoreLayerCollision(8, 11, false);
+
+        foreach (var col in _ragdollColliders)
+        {
+            col.enabled = true;
+        }
     }
 }

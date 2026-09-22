@@ -1,35 +1,36 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class GroundMovement : MonoBehaviour
 {
-    [Header("Speed")]
-    [SerializeField] protected float _crouchSpeed = 3f;
-    [SerializeField] protected float _runSpeed = 5f;
-    [SerializeField] protected float _sprintSpeed = 8f;
-    protected float _currentSpeed;
+    [Header("References")]
+    [SerializeField] Rigidbody _rb;
 
-    [SerializeField] protected float _inputSmoothSpeed = 8f;
-    [SerializeField] CharacterColliderResizer _characterColliderResizer;
+    [Header("Speed")]
+    [SerializeField] float _walkSpeed = 3f;
+    [SerializeField] float _runSpeed = 5f;
+    [SerializeField] float _sprintSpeed = 8f;
+    [SerializeField] float _pushSpeed = 1f;
+    [SerializeField] float _crouchSpeed = 3f;
+    [SerializeField] float _swimSpeed = 2f;
+    [SerializeField] float _maxSlideSpeed = 6f;
+
+    [SerializeField] float _inputSmoothSpeed = 8f;
 
     [Header("Acceleration")]
-    [SerializeField] protected float _acceleration = 10f;
-    [SerializeField] protected float _deceleration = 10f;
+    [SerializeField] float _acceleration = 10f;
+    [SerializeField] float _deceleration = 10f;
 
     [Header("Jump")]
-    [SerializeField] protected float _jumpForce = 5f;
+    [SerializeField] float _jumpForce = 5f;
 
-    protected Rigidbody _rb;
-    protected CapsuleCollider _capsule;
+    float _currentSpeed;
+    Vector3 _smoothedDirection;
 
-    protected Vector3 _smoothedDirection;
+    public float CurrentSpeed => _currentSpeed;
     public Vector3 SmoothedDirection => _smoothedDirection;
 
-    void Awake()
-    {
-        _characterColliderResizer.InitDefault();
-    }
-
-    protected void UpdateSpeed(bool hasInput, float speed)
+    void UpdateSpeed(bool hasInput, float speed)
     {
         float targetSpeed = hasInput ? speed : 0f;
         float accel = targetSpeed > _currentSpeed ? _acceleration : _deceleration;
@@ -37,59 +38,54 @@ public class GroundMovement : MonoBehaviour
         _currentSpeed = Mathf.MoveTowards(_currentSpeed, targetSpeed, accel * Time.fixedDeltaTime);
     }
 
-    public virtual void Jump()
+    public void Jump()
     {
         _rb.AddForce(Vector3.up * _jumpForce, ForceMode.VelocityChange);
     }
 
-    public void Crouch()
+    public void Crouch(Vector3 dir)
     {
-        _characterColliderResizer.SetSize(1f, new Vector3(0, 0.5f, 0));
+        SetDirectionAndSpeed(new(dir.x, 0, dir.z), _crouchSpeed);
     }
 
-    public void Uncrouch()
+    public void Sprint(Vector3 dir)
     {
-        _characterColliderResizer.SetSize(2f, new Vector3(0, 1f, 0));
+        SetDirectionAndSpeed(new(dir.x, 0, dir.z), _sprintSpeed);
     }
 
-    public void Sprint()
+    public void Walk(Vector3 dir)
     {
-
+        SetDirectionAndSpeed(new(dir.x, 0, dir.z), _walkSpeed);
+    }
+    public void Run(Vector3 dir)
+    {
+        SetDirectionAndSpeed(new(dir.x,0,dir.z), _runSpeed);
     }
 
-    public void Unsprint()
+    public void Slide(Vector3 dir)
     {
-
+        SetDirectionAndSpeed(transform.forward * dir.z, _maxSlideSpeed);
     }
 
-    /*public void Advance(Vector3 dir)
+    public void Push(Vector3 dir, PushableBox box)
     {
-        Vector3 targetDirection = new Vector3(dir.x, 0, dir.z);
+        if (box == null) return;
+        SetDirectionAndSpeed(new(dir.x, 0, dir.z), _pushSpeed);
+        box.Rb.MovePosition(box.Rb.position + new Vector3(_smoothedDirection.x, 0f, _smoothedDirection.z) * _currentSpeed * Time.fixedDeltaTime);
+    }
 
-        UpdateSmoothedDirection(targetDirection);
-        UpdateSpeed(targetDirection.sqrMagnitude > 0.01f, _runSpeed);
-
-        Vector3 horizontal = BuildHorizontalVelocity();
-
-        float verticalVelocity = _rb.linearVelocity.y;
-        _rb.linearVelocity = new Vector3(horizontal.x, verticalVelocity, horizontal.z);
-    }*/
-
-    protected void UpdateSmoothedDirection(Vector3 rawDir)
+    public void Swimming(Vector3 dir)
     {
-        if (rawDir.sqrMagnitude > 0.01f)
-        {
-            Vector3 targetNormalized = rawDir.normalized;
+        SetDirectionAndSpeed(dir, _swimSpeed);
+    }
 
-            Vector3 currentNormalized = _smoothedDirection.sqrMagnitude > 0.0001f
-                ? _smoothedDirection.normalized
-                : targetNormalized;
+    private void SetDirectionAndSpeed(Vector3 dir, float speed)
+    {
+        _smoothedDirection = new Vector3(dir.x, dir.y, dir.z);
+        
+        UpdateSpeed(_smoothedDirection.sqrMagnitude > 0.01f, speed);
 
-            _smoothedDirection = Vector3.Slerp(
-                currentNormalized,
-                targetNormalized,
-                _inputSmoothSpeed * Time.fixedDeltaTime
-            );
-        }
+        Vector3 delta = _smoothedDirection.sqrMagnitude > 1f ? _smoothedDirection.normalized * _currentSpeed : _smoothedDirection * _currentSpeed;
+        _rb.MovePosition(_rb.position + delta * Time.fixedDeltaTime);
     }
 }

@@ -12,12 +12,12 @@ public class SkipLogo : MonoBehaviour
     {
         _inputActions = new InputsActions();
         _inputActions.Enable();
-        _inputActions.Logo.AnyKey.performed += OnSkipLogoPerformed;
+        _inputActions.Global.AnyKey.performed += OnSkipLogoPerformed;
     }
 
     private void OnDestroy()
     {
-        _inputActions.Logo.AnyKey.performed -= OnSkipLogoPerformed;
+        _inputActions.Global.AnyKey.performed -= OnSkipLogoPerformed;
         _inputActions.Disable();
         _inputActions.Dispose();
     }

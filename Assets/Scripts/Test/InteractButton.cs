@@ -2,7 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class InteractButton : MonoBehaviour, IInteractable
+public class InteractButton : MonoBehaviour, IPresseable, ILeverHandRig
 {
     [SerializeField] private UnityEvent _event;
     [SerializeField] private InteractMode _interactMode = InteractMode.Once;
@@ -13,6 +13,8 @@ public class InteractButton : MonoBehaviour, IInteractable
     [SerializeField] private AudioSource _audioSource;
     [SerializeField] private MeshRenderer _meshRenderer;
     [SerializeField] private float _resetDelay = 10f;
+    [SerializeField] private Transform _rightHandPoint;
+    public Transform RightHandPoint => _rightHandPoint; 
     private bool _isActive = false;
     private int _count = 0;
 
@@ -21,7 +23,6 @@ public class InteractButton : MonoBehaviour, IInteractable
         ActivateLamp(_isActive);
     }
 
-    [ContextMenu("Interact")]
     public void Interact()
     {
         switch (_interactMode)

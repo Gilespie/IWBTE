@@ -21,7 +21,7 @@ public class Circul : MonoBehaviour
             DecrementSpeed();
         }
 
-        transform.Rotate(Vector3.right * _currentSpeed);
+        transform.Rotate(Vector3.forward * _currentSpeed);
     }
 
     void IncrementSpeed()

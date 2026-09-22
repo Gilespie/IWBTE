@@ -126,7 +126,7 @@ public class Raycasting : MonoBehaviour
 
         if (Physics.SphereCast(_interactRay, _intRadius, out _interactHit, _interactRayDistance, _interactLayer))
         {
-            if (_interactHit.collider.TryGetComponent(out IInteractable interact))
+            if (_interactHit.collider.TryGetComponent(out IPresseable interact))
             {
                 interact.Interact();
             }

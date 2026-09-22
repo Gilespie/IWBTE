@@ -1,7 +1,6 @@
 public enum ActionMap
 {
     PlayerMovement,
-    PlayerSliding,
-    PlayerSwimming,
+    Global,
     UI
 }

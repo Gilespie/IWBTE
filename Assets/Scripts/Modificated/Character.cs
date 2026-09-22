@@ -6,13 +6,17 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
     [SerializeField] bool _isAlive = true;
     public bool IsAlive => _isAlive;
 
+    [SerializeField] GrabRigController _handsGrabRig;
+    [SerializeField] GrabOneHandController _oneHandGrabRig;
+
     [SerializeField] CharacterAnimationController _animationController;
     [SerializeField] CharacterInputController _inputController;
     [SerializeField] GroundRaycast _groundRaycast;
     [SerializeField] ForwardRaycast _interactRaycast;
     [SerializeField] CanStandRaycast _canStandUpRaycast;
     [SerializeField] Rigidbody _rb;
-    [SerializeField] MovementAdvance[] _movements;//0 - walk, 1 - sprint, 2 - crouch, 3 - swim, 4 - slope, 5 - push
+    [SerializeField] GroundMovement _movement;
+    //[SerializeField] MovementAdvance[] _movements;//0 - walk, 1 - sprint, 2 - crouch, 3 - swim, 4 - slope, 5 - push
     [SerializeField] CharacterRotator _characterRotator;
     [SerializeField] Ragdoll _ragdoll;
     [SerializeField] Collider _col;
@@ -22,15 +26,15 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
     [SerializeField] CharacterView _view;
 
     [SerializeField] PhysicsMaterial _slideMaterial;
-    protected IExternalVelocity _externalVelocityProvider;
-    protected Vector3 _externalVelocity;
+   // protected IExternalVelocity _externalVelocityProvider;
+   // protected Vector3 _externalVelocity;
 
-    MovementAdvance _currentMovement;
+    //MovementAdvance _currentMovement;
     bool _isCrouching = false;
     bool _isSliding = false;
     bool _isSprinting = false;
     bool _isSwimming = false;
-    bool _isPushing = false;
+    //bool _isPushing = false;
     bool _isGround = false;
     bool _isPressingNow = false;
     bool _isGrab = false;
@@ -38,20 +42,25 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
     bool _inWaterZone = false;
     bool _isOnAir = false;
     bool _isFalling = false;
-
-    bool _wasSwimming = false;
-    bool _wasSliding = false;
+    bool _isWalking = false;
+    //bool _wasSwimming = false;
+    //bool _wasSliding = false;
 
     PushableBox _currentBox;
     public PushableBox CurrentBox => _currentBox;
     WaterZone _currentWaterZone;
-    private IPushable _currentPushable;
+    //private IPushable _currentPushable;
+
+    private IGrabbable _currentGrabbable;
+
+    IControllable _currentLever;
+    bool _isControllingLever;
 
 
     void Awake()
     {
         _characterColliderResizer.InitDefault();
-
+        _characterRotator.Initialize(_groundRaycast);
         GameManager.Instance.Player = this;
 
         EventManager.Subscribe(EventType.OnFalled, HandleFallDeath);
@@ -59,13 +68,9 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         SaveManager.Instance.Register(this);
     }
 
-    void OnEnable()
-    {
-    }
-
     void Start()
     {
-        ChangeMovement(_movements[0]);
+        //ChangeMovement(_movements[0]);
     }
 
     void Update()
@@ -98,11 +103,20 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
             }
         }
 
+        if (_isControllingLever)
+        {
+            UpdateLever();
+            TryStopLever();
+            return;
+        }
+
+        TryStartLever();
+
         if (_inputController.IsInteracting)
         {
             bool isPushableInFront = _interactRaycast.TryGetHit(out IPushable _);
 
-            if (!isPushableInFront && _interactRaycast.TryGetHit(out IInteractable interactable))
+            if (!isPushableInFront && _interactRaycast.TryGetHit(out IPresseable interactable))
             {
                 Pressing();
             }
@@ -114,9 +128,9 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         {
             _animationController.SetTrigger(AnimParams.Jump);
 
-            if (_currentMovement.CurrentSpeed > 0.1f)
+            if (_movement.CurrentSpeed > 0.1f)
             {
-                _currentMovement.Jump();
+                _movement.Jump();
             }
 
             _inputController.ResetJump();
@@ -132,29 +146,75 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
                 _isCrouching = false;
         }
 
-        _isSprinting = _inputController.IsSprinting;
+        _isSprinting = _inputController.IsSprinting && !_isCrouching;
+        _isWalking = _inputController.IsWalking && !_isCrouching && !_isSprinting;
 
+        if (_isPushingNow)
+        {
+            float xInput = _inputController.Direction.x;
+            float zInput = _inputController.Direction.z;
 
-        _animationController.SetFloat(AnimParams.Speed, _currentMovement.CurrentSpeed);
+            _animationController.SetFloat(AnimParams.XInput, xInput);
+            _animationController.SetFloat(AnimParams.ZInput, zInput);
+        }
+
+        _animationController.SetFloat(AnimParams.Speed, _movement.CurrentSpeed);
 
         if (_inputController.Direction.sqrMagnitude > 0.1f * 0.1f)
             _animationController.SetBool(AnimParams.Move, true);
         else
             _animationController.SetBool(AnimParams.Move, false);
 
-        TryStartPush();
-        TryStopPush();
+        TryStartGrab();
+        TryStopGrab();
     }
+
+    void TryStartLever()
+    {
+        if (_isControllingLever) return;
+        if (!_inputController.IsLeverHolding || !_isGrab) return;
+
+        if (_interactRaycast.TryGetHit(out IControllable lever))
+        {
+            _currentLever = lever;
+            _isControllingLever = true;
+
+            _inputController.EnableLeverMap();
+            _oneHandGrabRig.Activate(lever.HandAnchor);
+        }
+    }
+
+    void TryStopLever()
+    {
+        if (_inputController.IsLeverHolding) return;
+        Debug.Log("lever try stop");
+        _currentLever?.OnRelease();
+
+        _oneHandGrabRig.Deactivate();
+        _inputController.EnableMovementMap();
+
+        _currentLever = null;
+        _isControllingLever = false;
+    }
+
+    void UpdateLever()
+    {
+        float value = _currentLever.GetAxisValue(_inputController.LeverAxis);
+        _currentLever.SetInputValue(value);
+    }
+
 
     void FixedUpdate()
     {
         if (!_isAlive) return;
 
-        _externalVelocity = _externalVelocityProvider != null ? _externalVelocityProvider.ExternalVelocity : Vector3.zero;
+        Vector3 swimDir = _isSwimming ? GetSwimDirection() : Vector3.zero;
 
-        UpdateInputMap();
+        //_externalVelocity = _externalVelocityProvider != null ? _externalVelocityProvider.ExternalVelocity : Vector3.zero;
 
-        if (_isSwimming)
+        //UpdateInputMap();
+
+        /*if (_isSwimming)
         {
             ChangeMovement(_movements[3]);
         }
@@ -177,41 +237,71 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         else
         {
             ChangeMovement(_movements[0]);
+        }*/
+
+        if (_isSwimming)
+        {
+            _movement.Swimming(swimDir);
         }
+        else if (_isPushingNow)
+        {
+            _movement.Push(_inputController.Direction, _currentBox);
+        }
+        else if (_isSliding)
+        {
+            ChangePhysicMaterial();
+            _movement.Slide(_inputController.Direction);
+        }
+        else if (_isCrouching)
+        {
+            _movement.Crouch(_inputController.Direction);
+        }
+        else if (_isSprinting)
+        {
+            _movement.Sprint(_inputController.Direction);
+        }
+        else if(_isWalking)
+        {
+            _movement.Walk(_inputController.Direction);
+        }
+        else
+        {
+            ResetPhysicsMaterial();
+            _movement.Run(_inputController.Direction);
+        }
+
 
         TryCrouching();
         SlideCharacter();
         UpdateCollider();
 
-        Vector3 dir = GetCurrentDirection();
+        //Vector3 dir = GetCurrentDirection();
 
-        _currentMovement.Advance(dir, _externalVelocity);
+        //_currentMovement.Advance(dir, _externalVelocity);
 
         if (!_isPushingNow)
         {
             if (_isSwimming)
             {
-                _characterRotator.RotateSwimming(dir);
+                _characterRotator.RotateSwimming(swimDir);
             }
             else
             {
-                _characterRotator.Rotate(_currentMovement.SmoothedDirection, _rb.linearVelocity);
+                _characterRotator.Rotate(_inputController.Direction, _rb.linearVelocity);
             }
         }
-    }
-
-    private void OnDisable()
-    {
     }
 
     void OnDestroy()
     {
         EventManager.Unsubscribe(EventType.OnFalled, HandleFallDeath);
         EventManager.Unsubscribe(EventType.OnFinishOxygen, InstantKill);
-        SaveManager.Instance.Unregister(this);
+
+        if (SaveManager.Instance != null)
+            SaveManager.Instance.Unregister(this);
     }
 
-    void UpdateInputMap()
+    /*void UpdateInputMap()
     {
         if (_isSwimming == _wasSwimming && _isSliding == _wasSliding) return;
 
@@ -224,9 +314,21 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
 
         _wasSwimming = _isSwimming;
         _wasSliding = _isSliding;
+    }*/
+
+    Vector3 GetSwimDirection()
+    {
+        Vector3 swimDir = _inputController.SwimDirection;
+
+        if (_headPoint.position.y >= _currentWaterZone.BoundY && swimDir.y > 0f)
+        {
+            swimDir.y = 0f;
+        }
+
+        return swimDir;
     }
 
-    Vector3 GetCurrentDirection()
+    /*Vector3 GetCurrentDirection()
     {
         if (_isSwimming)
         {
@@ -246,7 +348,7 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         }
 
         return _inputController.Direction;
-    }
+    }*/
 
     void UpdateCollider()
     {
@@ -254,9 +356,13 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         {
             _characterColliderResizer.SetSize(1f, new Vector3(0, 0.5f, 0));
         }
+        else if(_isSliding)
+        {
+            _characterColliderResizer.SetSize(1f, new Vector3(0, 0.5f, 0)); //change values correctly
+        }
         else
         {
-            _characterColliderResizer.SetSize(2f, new Vector3(0, 1f, 0));
+            _characterColliderResizer.ResetSize();
         }
     }
 
@@ -291,7 +397,7 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         _view.PlayVoice();
     }
 
-    void ChangeMovement(MovementAdvance newMovement)
+    /*void ChangeMovement(MovementAdvance newMovement)
     {
         if (_currentMovement == newMovement) return;
 
@@ -309,7 +415,7 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
     public void SetExternalVelocity(IExternalVelocity velocity)
     {
         _externalVelocityProvider = velocity;
-    }
+    }*/
 
     void TryCrouching()
     {
@@ -346,7 +452,7 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         _rb.useGravity = false;
         _animationController.SetTrigger(AnimParams.StartSwimm);
 
-        ChangeMovement(_movements[3]);
+        //ChangeMovement(_movements[3]);
         
         _view.PlayBubbleVFX(true);
     }
@@ -357,7 +463,7 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         _rb.useGravity = true;
         _animationController.SetTrigger(AnimParams.StopSwimm);
 
-        ChangeMovement(_movements[0]);
+        //ChangeMovement(_movements[0]);
 
         _view.PlayBubbleVFX(false);
     }
@@ -367,81 +473,50 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         if (_isPressingNow) return;
 
         _isPressingNow = true;
-        _animationController.SetTrigger(AnimParams.Press);
 
-        if (_interactRaycast.TryGetHit(out IInteractable interactable))
+        if (_interactRaycast.TryGetHit(out IPresseable interactable))
         {
             interactable.Interact();
+
+            if (interactable is ILeverHandRig handRig)
+            {
+                StartCoroutine(PressHandRoutine(handRig));
+            }
         }
 
         StartCoroutine(ResetPress());
     }
 
-    /*void TryStartPush()
+    void TryStartGrab()
     {
-        if (_isPushingNow) return;
-
+        if (_currentGrabbable != null) return;
         if (!_inputController.IsPushing || !_isGrab) return;
 
-        _interactRaycast.IsRaycasting(transform.forward);
-
-        if (_interactRaycast.TryGetHit(out IPushable pushable))
+        if (_interactRaycast.TryGetHit(out IGrabbable grabbable))
         {
-            pushable.Pushing(_interactRaycast);
-            _isPushingNow = true;
-            _currentPushable = pushable;
-        }
-    }*/
+            _currentGrabbable = grabbable;
+            _handsGrabRig.Activate(grabbable);
 
-    /*
-        public void StartPush(PushableBox box)
-        {
-            if (_isPushingNow) return;
-
-            Debug.Log("Start Pushing");
-
-            _isPushingNow = true;
-            _currentBox = box;
-
-            Vector3 dir = (box.transform.position - transform.position).normalized;
-            dir.y = 0f;
-
-            _characterRotator.Mesh.forward = dir;
-
-            _animationController.SetBool(AnimParams.Push, true);
-        }
-
-        public void StopPush()
-        {
-            if (!_isPushingNow) return;
-            Debug.Log("Stop Pushing");
-            _isPushingNow = false;
-            _currentBox = null;
-
-            _animationController.SetBool(AnimParams.Push, false);
-        }
-
-        void TryStopPush()
-        {
-            if (!_isPushingNow) return;
-
-            if (!_inputController.IsPushing || !_isGrab)
+            if (grabbable is IPushable pushable)
             {
-                _currentPushable?.StopPushing();
-                _currentPushable = null;
-                _isPushingNow = false;
+                pushable.Pushing(_interactRaycast);
             }
-        }*/
+        }
+    }
 
-    void TryStartPush()
+    void TryStopGrab()
     {
-        if (_isPushingNow) return;
-        if (!_inputController.IsPushing || !_isGrab) return;
+        if (_currentGrabbable == null) return;
 
-        if (_interactRaycast.TryGetHit(out IPushable pushable))
+        if (!_inputController.IsPushing || !_isGrab)
         {
-            _currentPushable = pushable;
-            pushable.Pushing(_interactRaycast);
+            if (_currentGrabbable is IPushable pushable)
+            {
+                pushable.StopPushing();
+            }
+
+            _handsGrabRig.Deactivate();
+            _currentGrabbable = null;
         }
     }
 
@@ -455,18 +530,7 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         Vector3 dir = (box.transform.position - transform.position).normalized;
         dir.y = 0f;
         _characterRotator.Mesh.forward = dir;
-
-        _animationController.SetBool(AnimParams.Push, true);
-    }
-
-    void TryStopPush()
-    {
-        if (!_isPushingNow) return;
-
-        if (!_inputController.IsPushing || !_isGrab)
-        {
-            _currentPushable?.StopPushing();
-        }
+        _animationController.SetLayerWeight(1f);
     }
 
     public void StopPush()
@@ -475,15 +539,22 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
 
         _isPushingNow = false;
         _currentBox = null;
-        _currentPushable = null;
+        //_currentPushable = null;
 
-        _animationController.SetBool(AnimParams.Push, false);
+        _animationController.SetLayerWeight(0f);
     }
 
     IEnumerator ResetPress()
     {
         yield return new WaitForSeconds(2f);
         _isPressingNow = false;
+    }
+
+    IEnumerator PressHandRoutine(ILeverHandRig handRig)
+    {
+        _oneHandGrabRig.Activate(handRig.RightHandPoint);
+        yield return new WaitForSeconds(0.4f);
+        _oneHandGrabRig.Deactivate();
     }
 
     public void DeactivateRBKinematic()
@@ -499,7 +570,7 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
 
     public void PlayJump()
     {
-        _currentMovement.Jump();
+        _movement.Jump();
     }
 
     public void CaptureState(SaveGameData data)

@@ -10,10 +10,10 @@ public class PlayerAvatar : MonoBehaviour
         _parent = GetComponentInParent<Character>();    
     }
 
-    public void Pressing()
+    /*public void Pressing()
     {
         _parent.Pressing();
-    }
+    }*/
 
     public void PlayJump()
     {

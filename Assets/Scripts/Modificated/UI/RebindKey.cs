@@ -84,10 +84,6 @@ public class RebindKey : MonoBehaviour
         int index = GetBindingIndex();
 
         _rebindOperation = _action.PerformInteractiveRebinding(index)
-            .WithControlsExcluding("Mouse")
-            .WithControlsExcluding("Keyboard/enter")
-            .WithControlsExcluding("Keyboard/e")
-            .WithControlsExcluding("Keyboard/escape")
             .OnMatchWaitForAnother(0.1f)
             .OnComplete(OnRebindComplete)
             .OnCancel(OnRebindCancel)

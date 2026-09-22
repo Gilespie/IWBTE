@@ -4,6 +4,7 @@ public class CharacterAnimationController : MonoBehaviour
 {
     [Header("Animator")]
     [SerializeField] Animator _animator;
+    int _pushLayer = 1;
 
     public void SetBool(int param, bool value)
     {
@@ -18,5 +19,10 @@ public class CharacterAnimationController : MonoBehaviour
     public void SetTrigger(int param)
     {
         _animator.SetTrigger(param);
+    }
+
+    public void SetLayerWeight(float weight)
+    {
+        _animator.SetLayerWeight(_pushLayer, weight);
     }
 }

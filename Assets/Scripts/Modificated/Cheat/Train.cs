@@ -60,8 +60,8 @@ public class Train : MonoBehaviour, IExternalVelocity
 
         if (character != null)
         {
-            character.SetExternalVelocity(this);
-            character.ResetPhysicsMaterial();
+            //character.SetExternalVelocity(this);
+            //character.ResetPhysicsMaterial();
             character.transform.SetParent(transform);
         }
     }
@@ -72,8 +72,8 @@ public class Train : MonoBehaviour, IExternalVelocity
 
         if (character != null)
         {
-            character.SetExternalVelocity(null);
-            character.ChangePhysicMaterial();
+            //character.SetExternalVelocity(null);
+            //character.ChangePhysicMaterial();
             character.transform.SetParent(null);
         }
     }
