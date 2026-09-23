@@ -8,10 +8,12 @@ public class ZLimiter : MonoBehaviour
     [SerializeField] private float _zPosMin = -5f;
     [SerializeField] private float _zPosMax = 2.34f;
     private float _zPosMaxDefault;
+    private float _zPosMinDefault;
 
     private void Awake()
     {
         _zPosMaxDefault = _zPosMax;
+        _zPosMinDefault = _zPosMin;
     }
 
     private void FixedUpdate()
@@ -31,8 +33,14 @@ public class ZLimiter : MonoBehaviour
         _zPosMax = value;
     }
 
+    public void SetZMinLimit(float value)
+    {
+        _zPosMin = value;
+    }
+
     public void ResetLimit()
     {
         _zPosMax = _zPosMaxDefault;
+        _zPosMin = _zPosMinDefault;
     }
 }
