@@ -77,6 +77,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: m_StandartMetal
+    second: {fileID: 2100000, guid: 55b22b014c5c72b419ff85ddc3865e48, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: m_TreeLeafs
     second: {fileID: 2100000, guid: 6a0675eb3f4004749a9c1f02f280abe5, type: 2}
   - first:
