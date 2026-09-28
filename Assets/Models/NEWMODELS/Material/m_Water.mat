@@ -118,14 +118,14 @@ Material:
     - _NoiseScale1: 150
     - _NoiseScale2: 200
     - _NoiseScale3: 250
-    - _NormalStrenght: 0.11
+    - _NormalStrenght: 0.16
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _Power: 0.5
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smooth: 0.103
+    - _Smooth: 0.746
     - _Smoothness: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -133,7 +133,7 @@ Material:
     - _SrcBlendAlpha: 1
     - _Surface: 0
     - _UVSec: 0
-    - _WaveIntensity: 0.05
+    - _WaveIntensity: 0.07
     - _WorkflowMode: 1
     - _ZTest: 4
     - _ZWrite: 1
@@ -142,12 +142,12 @@ Material:
     m_Colors:
     - _BaseColor: {r: 0.57554907, g: 0.7164329, b: 0.754629, a: 0.82738096}
     - _Color: {r: 0.575549, g: 0.7164329, b: 0.754629, a: 0.82738096}
-    - _Color1: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
-    - _Color2: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
+    - _Color1: {r: 0.8396226, g: 0.8396226, b: 0.8396226, a: 1}
+    - _Color2: {r: 0.5082325, g: 0.764151, b: 0.74814874, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Offset1: {r: 0.07, g: 0.15, b: 0, a: 0}
-    - _Offset2: {r: -0.05, g: 0.1, b: 0, a: 0}
-    - _Offset3: {r: 0.03, g: 0.07, b: 0, a: 0}
+    - _Offset1: {r: 0.07, g: 0.1, b: 0, a: 0}
+    - _Offset2: {r: -0.05, g: 0.2, b: 0, a: 0}
+    - _Offset3: {r: 0.03, g: 0.16, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
     - _Speed: {r: 0.01, g: -0.01, b: 0, a: 0}
     - _Tiling1: {r: 1, g: 1, b: 0, a: 0}
