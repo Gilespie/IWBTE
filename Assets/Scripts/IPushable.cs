@@ -1,5 +1,5 @@
 public interface IPushable
 {
-    void Pushing(ForwardRaycast interactor);
+    bool Pushing(ForwardRaycast interactor);
     void StopPushing();
 }

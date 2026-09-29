@@ -17,9 +17,11 @@ public class InteractButton : MonoBehaviour, IPresseable, ILeverHandRig
     public Transform RightHandPoint => _rightHandPoint; 
     private bool _isActive = false;
     private int _count = 0;
+    private Material _lampMaterial;
 
     private void Start()
     {
+        _lampMaterial = _meshRenderer.materials[1];
         ActivateLamp(_isActive);
     }
 
@@ -57,20 +59,13 @@ public class InteractButton : MonoBehaviour, IPresseable, ILeverHandRig
     public void ResetSwitch()
     {
         _isActive = false;
-        PlaySound(_sfxOn, _sfxOff);
-        ActivateLamp(false);
+        //PlaySound(_sfxOn, _sfxOff);
+        ActivateLamp(_isActive);
     }
 
     private void ActivateLamp(bool isActive)
     {
-        if (_isActive)
-        {
-            _meshRenderer.material.SetColor("_EmissionColor", _colorOn);
-        }
-        else
-        {
-            _meshRenderer.material.SetColor("_EmissionColor", _colorOff);
-        }
+        _lampMaterial.SetColor("_EmissionColor", isActive ? _colorOn : _colorOff);
     }
 
     IEnumerator ResetRoutine()

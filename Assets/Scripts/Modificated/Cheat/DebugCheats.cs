@@ -5,27 +5,6 @@ public class DebugCheats : SingletonBase<DebugCheats>
 {
     [SerializeField] bool _isDebugMode = false;
     [SerializeField] Transform[] _subdivisions;
-    [SerializeField] private Transform _target;
-
-/*    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.F9))
-        {
-            _isDebugMode = !_isDebugMode;
-            Debug.Log($"Debug mode: {_isDebugMode}");
-        }
-
-        if(_isDebugMode)
-        {
-            for (int i = 0; i < _subdivisions.Length; i++)
-            {
-                if (Input.GetKeyDown(KeyCode.Alpha1 + i))
-                {
-                    _target.position = _subdivisions[i].position;
-                }
-            }
-        }
-    }*/
 
     static readonly Key[] _digitKeys =
     {
@@ -36,6 +15,7 @@ public class DebugCheats : SingletonBase<DebugCheats>
     void Update()
     {
         var keyboard = Keyboard.current;
+
         if (keyboard == null) return;
 
         if (keyboard[Key.F9].wasPressedThisFrame)
@@ -46,13 +26,29 @@ public class DebugCheats : SingletonBase<DebugCheats>
 
         if (!_isDebugMode) return;
 
+        var player = GameManager.Instance != null ? GameManager.Instance.Player : null;
+
+        if (player == null) return;
+
         int count = Mathf.Min(_subdivisions.Length, _digitKeys.Length);
         for (int i = 0; i < count; i++)
         {
-            if (keyboard[_digitKeys[i]].wasPressedThisFrame)
-            {
-                _target.position = _subdivisions[i].position;
-            }
+            if (!keyboard[_digitKeys[i]].wasPressedThisFrame) continue;
+
+            if (_subdivisions[i] == null) continue;
+
+            Teleport(player, _subdivisions[i].position);
         }
+    }
+
+    void Teleport(Character player, Vector3 position)
+    {
+        if (player.TryGetComponent(out Rigidbody rb))
+        {
+            rb.position = position;
+            rb.linearVelocity = Vector3.zero;
+        }
+
+        player.transform.position = position;
     }
 }

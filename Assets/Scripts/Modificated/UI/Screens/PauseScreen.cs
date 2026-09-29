@@ -12,7 +12,6 @@ public class PauseScreen : ScreenBase
     [SerializeField] Button _loadBTN;
     [SerializeField] Button _settingsBTN;
     [SerializeField] Button _exitBTN;
-    bool _isRestarting = false;
 
     void Awake()
     {
@@ -46,11 +45,8 @@ public class PauseScreen : ScreenBase
 
     void RestartLevel()
     {
-        if (_isRestarting) return;
-
         OnPausePressed();
         LoadSceneManager.Instance.RestartGame();
-        _isRestarting = true;
     }
 
     void ExitFromGame()

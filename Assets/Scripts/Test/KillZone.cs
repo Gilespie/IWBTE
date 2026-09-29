@@ -6,9 +6,7 @@ public class KillZone : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        Destructable destruct = other.gameObject.GetComponent<Destructable>();
-
-        if (destruct != null)
+        if (other.gameObject.TryGetComponent(out IDamageable destruct))
         {
             destruct.InstantKill();
         }

@@ -8,7 +8,6 @@ public class CameraPointFollow : MonoBehaviour
     [SerializeField] private Transform _target;
     [SerializeField] private Transform _lookTarget;
     [SerializeField] private Vector3 _offset;
-    [SerializeField] private bool _isStaticZ = false;
 
     [Header("Lerping Settings")]
     [SerializeField] bool _lerp = false;
@@ -20,16 +19,13 @@ public class CameraPointFollow : MonoBehaviour
     [SerializeField] private AudioSource _audioSource;
     private Volume _currentUnderwaterVolume;
     private WaterZone _currentWaterZone;
-    float _defaultZPos;
     Vector3 _defaultOffset;
     private Vector3 _shakeOffset;
-    float _zPos = -8f;
 
     private Transform _cameraFixedPoint = null;
 
     private void Awake()
     {
-        _defaultZPos = _offset.z;
         _defaultOffset = _offset;
         _lerp = true;
         GameManager.Instance.CameraPointFollow = this;
@@ -151,19 +147,14 @@ public class CameraPointFollow : MonoBehaviour
     {
         _cameraFixedPoint = null;
         _lookTarget = _target;
-        _offset.z = _defaultZPos;
+        _offset = _defaultOffset;
         ActiveLerpSmoothing(true);
-    }
-
-    public void SetZPos(float value)
-    {
-        _zPos = value;
-        _offset.z = _zPos;
     }
 
     public void SetCameraOffset(Vector3 offset)
     {
         _offset = offset;
+        _defaultOffset = _offset;
     }
 
     public void SetShakeOffset(Vector3 offset)

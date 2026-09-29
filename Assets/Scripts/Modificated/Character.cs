@@ -18,6 +18,7 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
     [SerializeField] GroundMovement _movement;
     //[SerializeField] MovementAdvance[] _movements;//0 - walk, 1 - sprint, 2 - crouch, 3 - swim, 4 - slope, 5 - push
     [SerializeField] CharacterRotator _characterRotator;
+    public Transform MeshTransform => _characterRotator.Mesh;
     [SerializeField] Ragdoll _ragdoll;
     [SerializeField] Collider _col;
     [SerializeField] CharacterColliderResizer _characterColliderResizer;
@@ -131,10 +132,10 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
             if (_movement.CurrentSpeed > 0.1f)
             {
                 _movement.Jump();
-            }
-
-            _inputController.ResetJump();
+            } 
         }
+
+        _inputController.ResetJump();
 
         if (_inputController.IsCrouching)
         {
@@ -492,15 +493,19 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         if (_currentGrabbable != null) return;
         if (!_inputController.IsPushing || !_isGrab) return;
 
-        if (_interactRaycast.TryGetHit(out IGrabbable grabbable))
+        if (!_interactRaycast.TryGetHit(out IGrabbable grabbable)) return;
+
+        if (grabbable is IPushable pushable)
+        {
+            if (!pushable.Pushing(_interactRaycast)) return;
+
+            _currentGrabbable = grabbable;
+            _handsGrabRig.Activate(grabbable);
+        }
+        else
         {
             _currentGrabbable = grabbable;
             _handsGrabRig.Activate(grabbable);
-
-            if (grabbable is IPushable pushable)
-            {
-                pushable.Pushing(_interactRaycast);
-            }
         }
     }
 

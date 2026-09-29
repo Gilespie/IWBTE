@@ -58,7 +58,7 @@ MonoBehaviour:
   - name: Texture
     path: Texture
     tooltip: 
-    space: 0
+    space: -1
     spaceable: 0
     sheetType: m_NamedObject
     realType: Texture2D
@@ -74,7 +74,7 @@ MonoBehaviour:
   - name: Color
     path: Color
     tooltip: 
-    space: 0
+    space: -1
     spaceable: 0
     sheetType: m_Gradient
     realType: Gradient
@@ -90,7 +90,7 @@ MonoBehaviour:
   - name: SizeRandom
     path: SizeRandom
     tooltip: 
-    space: 0
+    space: -1
     spaceable: 0
     sheetType: m_Vector2f
     realType: Vector2
@@ -106,7 +106,7 @@ MonoBehaviour:
   - name: Lifetime
     path: Lifetime
     tooltip: 
-    space: 0
+    space: -1
     spaceable: 0
     sheetType: m_Vector2f
     realType: Vector2
@@ -122,7 +122,7 @@ MonoBehaviour:
   - name: ScaleMin
     path: ScaleMin
     tooltip: 
-    space: 0
+    space: -1
     spaceable: 0
     sheetType: m_Vector3f
     realType: Vector3
@@ -138,7 +138,7 @@ MonoBehaviour:
   - name: ScaleMax
     path: ScaleMax
     tooltip: 
-    space: 0
+    space: -1
     spaceable: 0
     sheetType: m_Vector3f
     realType: Vector3
@@ -154,7 +154,7 @@ MonoBehaviour:
   - name: VelocityMin
     path: VelocityMin
     tooltip: 
-    space: 0
+    space: -1
     spaceable: 0
     sheetType: m_Vector3f
     realType: Vector3
@@ -170,7 +170,7 @@ MonoBehaviour:
   - name: VelocityMax
     path: VelocityMax
     tooltip: 
-    space: 0
+    space: -1
     spaceable: 0
     sheetType: m_Vector3f
     realType: Vector3
@@ -186,7 +186,7 @@ MonoBehaviour:
   - name: ParticleCount
     path: ParticleCount
     tooltip: 
-    space: 0
+    space: -1
     spaceable: 0
     sheetType: m_Float
     realType: Single
@@ -1291,7 +1291,7 @@ MonoBehaviour:
       m_Type:
         m_SerializableType: UnityEngine.Texture2D, UnityEngine.CoreModule, Version=0.0.0.0,
           Culture=neutral, PublicKeyToken=null
-      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"276d9e395ae18fe40a9b4988549f2349","type":3}}'
+      m_SerializableObject: '{"obj":{"fileID":2800000,"guid":"b2e71e01a800acc4eaae7dd53b98e67b","type":3}}'
     m_Space: -1
   m_Property:
     name: mainTexture
