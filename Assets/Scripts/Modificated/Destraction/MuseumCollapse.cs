@@ -8,9 +8,9 @@ public class MuseumCollapse : MonoBehaviour
     [SerializeField] float _delay = 1.0f;
     [SerializeField] Rigidbody[] _rbs;
     [SerializeField] Lamp[] _lamps;
+    [SerializeField] Light[] _lights;
     [SerializeField] VisualEffect[] _vfxs;
     [SerializeField] AudioSource _as;
-    [SerializeField] float _impusleForce = 0.01f;
     [SerializeField] Animator _animator;
 
     public void ActivateCollapse()
@@ -33,7 +33,12 @@ public class MuseumCollapse : MonoBehaviour
 
         foreach (var lamps in _lamps)
         {
-            lamps.TakeImpulse(_impusleForce);
+            lamps.LampEvent();
+        }
+
+        foreach(var lights in _lights)
+        {
+            lights.enabled = false;
         }
     }
 
