@@ -5,10 +5,12 @@ public class PauseScreen : ScreenBase
 {
     [Header("Panels")]
     [SerializeField] GameObject _settingsPanel;
+    [SerializeField] GameObject _loadgamePanel;
 
     [Header("Buttons")]
     [SerializeField] Button _continueBTN;
     [SerializeField] Button _restartBTN;
+    [SerializeField] Button _loadgameBTN;
     [SerializeField] Button _loadBTN;
     [SerializeField] Button _settingsBTN;
     [SerializeField] Button _exitBTN;
@@ -17,7 +19,7 @@ public class PauseScreen : ScreenBase
     {
         _continueBTN.onClick.AddListener(() => OnPausePressed(false));
         _restartBTN.onClick.AddListener(RestartLevel);
-        _loadBTN.onClick.AddListener(() => Debug.Log("Load Game clicked"));
+        _loadBTN.onClick.AddListener(() => ScreenManager.Instance.ActivateScreen(_loadgamePanel));
         _settingsBTN.onClick.AddListener(() => ScreenManager.Instance.ActivateScreen(_settingsPanel));
         _exitBTN.onClick.AddListener(ExitFromGame);
     }

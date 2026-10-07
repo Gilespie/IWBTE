@@ -7,7 +7,7 @@ public class ScreenBase : MonoBehaviour, IScreen
 {
     [Header("Main settings")]
     [SerializeField] GameObject _root;
-    [SerializeField] Button _defaultButton;
+    [SerializeField] protected Button _defaultButton;
 
     public void Activate()
     {

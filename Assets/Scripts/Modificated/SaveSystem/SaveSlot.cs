@@ -35,4 +35,6 @@ public class SaveSlot<T> where T : new()
             ? JsonUtility.FromJson<T>(File.ReadAllText(_path))
             : new T();
     }
+
+    public void Reset() => Data = new T();
 }

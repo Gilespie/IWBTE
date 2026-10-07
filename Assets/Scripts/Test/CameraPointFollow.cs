@@ -27,7 +27,7 @@ public class CameraPointFollow : MonoBehaviour
     private void Awake()
     {
         _defaultOffset = _offset;
-        _lerp = true;
+        //_lerp = true;
         GameManager.Instance.CameraPointFollow = this;
     }
 
@@ -148,7 +148,6 @@ public class CameraPointFollow : MonoBehaviour
         _cameraFixedPoint = null;
         _lookTarget = _target;
         _offset = _defaultOffset;
-        ActiveLerpSmoothing(true);
     }
 
     public void SetCameraOffset(Vector3 offset)
@@ -165,5 +164,39 @@ public class CameraPointFollow : MonoBehaviour
     public void ActiveLerpSmoothing(bool value)
     {
         _lerp = value;
+    }
+
+    public void SetIntroPoint(Transform point, Transform lookTarget)
+    {
+        _cameraFixedPoint = point;
+        _lookTarget = lookTarget;
+
+        transform.position = point.position;
+        transform.rotation = Quaternion.LookRotation(lookTarget.position - point.position);
+    }
+
+
+    public bool IsNearFollowPosition(float threshold)
+    {
+        Vector3 follow = _target.position + _offset;
+        return (transform.position - follow).sqrMagnitude <= threshold * threshold;
+    }
+
+    public void StartResetIntro()
+    {
+        StartCoroutine(ResetIntro());
+    }
+
+    IEnumerator ResetIntro()
+    {
+        _cameraFixedPoint = null;
+        _offset = _defaultOffset;
+
+        yield return new WaitForSeconds(5f);
+
+        _lookTarget = _target;
+        ActiveLerpSmoothing(true);
+        _lerp = true;
+        yield return null;
     }
 }

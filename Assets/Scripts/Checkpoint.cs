@@ -12,4 +12,9 @@ public class Checkpoint : MonoBehaviour
             _collider.enabled = false;
         }
     }
+
+    public void SaveCheckpointData()
+    {
+
+    }
 }

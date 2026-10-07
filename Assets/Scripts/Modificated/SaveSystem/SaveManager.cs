@@ -89,6 +89,8 @@ public class SaveManager : SingletonBase<SaveManager>
 
     public void SaveGame()
     {
+        _game.Data.IsNewGame = false;
+
         foreach (var s in _saveables)
             s.CaptureState(_game.Data);
 
@@ -102,7 +104,26 @@ public class SaveManager : SingletonBase<SaveManager>
 
         _game.Load();
 
+        if (_game.Data.IsNewGame)
+            return;
+
         foreach (var s in _saveables)
             s.RestoreState(_game.Data);
+    }
+
+    public void StartChapter(bool isNewGame, Vector3 spawnPosition)
+    {
+        IntroSequence.PlayedThisSession = !isNewGame;
+
+        _game.Reset();
+
+        SaveGameData d = _game.Data;
+        d.IsNewGame = isNewGame;
+        d.IsAlive = true;
+        d.x = spawnPosition.x;
+        d.y = spawnPosition.y;
+        d.z = spawnPosition.z;
+
+        _game.Save();
     }
 }

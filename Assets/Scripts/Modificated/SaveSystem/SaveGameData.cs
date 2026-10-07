@@ -7,4 +7,5 @@ public class SaveGameData
     public bool IsAlive;
     public string СurrentSceneName;
     public bool IsNewGame;
+    public bool IntroPlayed;
 }
