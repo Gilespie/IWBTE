@@ -28,4 +28,9 @@ public class ChapterButton : MonoBehaviour
     {
         EventSystem.current.SetSelectedGameObject(gameObject);
     }
+
+    public void SetLocked(bool locked)
+    {
+        _button.interactable = !locked;
+    }
 }

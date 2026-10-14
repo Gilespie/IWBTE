@@ -9,11 +9,14 @@ public class SaveManager : SingletonBase<SaveManager>
     public InputsActions InputActions => _inputActions;
 
     private SaveSlot<SettingsData> _settings;
+    private SaveSlot<ProgressData> _progress;
     private SaveSlot<SaveGameData> _game;
 
     public SettingsData Settings => _settings.Data;
 
     private readonly List<ISaveable> _saveables = new();
+
+    public int MaxUnlockedChapter => _progress.Data.MaxUnlockedChapter;
 
     protected override void Awake()
     {
@@ -21,10 +24,12 @@ public class SaveManager : SingletonBase<SaveManager>
 
         _settings = new SaveSlot<SettingsData>("settings.json");
         _game = new SaveSlot<SaveGameData>("save.json");
+        _progress = new SaveSlot<ProgressData>("progress.json");
 
         _inputActions = new InputsActions();
 
         LoadSettings();
+        _progress.Load();
         Apply();
         ApplyInputBindings();
     }
@@ -54,6 +59,20 @@ public class SaveManager : SingletonBase<SaveManager>
 
     public void Register(ISaveable s) => _saveables.Add(s);
     public void Unregister(ISaveable s) => _saveables.Remove(s);
+
+    public bool UnlockChapter(int chapterIndex)
+    {
+        if (chapterIndex <= _progress.Data.MaxUnlockedChapter) return false;
+
+        _progress.Data.MaxUnlockedChapter = chapterIndex;
+        _progress.Save();
+        return true;
+    }
+
+    public bool IsChapterUnlocked(int chapterIndex)
+    {
+        return chapterIndex <= _progress.Data.MaxUnlockedChapter;
+    }
 
     public void SaveSettings()
     {

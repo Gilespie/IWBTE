@@ -50,6 +50,20 @@ public class LoadScreen : ScreenBase
         }
     }
 
+    public override void Activate()
+    {
+        RefreshLocks();
+        base.Activate();
+    }
+    void RefreshLocks()
+    {
+        for (int i = 0; i < _buttons.Count; i++)
+        {
+            bool unlocked = SaveManager.Instance.IsChapterUnlocked(i);
+            _buttons[i].SetLocked(!unlocked);
+        }
+    }
+
     void ShowPreview(ChapterData chapter)
     {
         if (_previewImage != null)

@@ -9,7 +9,7 @@ public class ScreenBase : MonoBehaviour, IScreen
     [SerializeField] GameObject _root;
     [SerializeField] protected Button _defaultButton;
 
-    public void Activate()
+    public virtual void Activate()
     {
         PauseManager.Instance.Pause(this);
         _root.SetActive(true);

@@ -9,37 +9,30 @@ public class SliderAction : MonoBehaviour
     [SerializeField] Slider _sfxSlider;
     [SerializeField] Slider _uiSlider;
 
-    void Start()
+    void Start() => RefreshSliders();
+
+    void OnEnable() => RefreshSliders();
+
+    void OnDisable()
     {
-        _masterSlider.value = AudioManager.Instance.InitMasterVol;
-        _musicSlider.value = AudioManager.Instance.InitMusicVol;
-        _voiceSlider.value = AudioManager.Instance.InitVoiceVol;
-        _sfxSlider.value = AudioManager.Instance.InitSFXVol;
-        _uiSlider.value = AudioManager.Instance.InitUIVol;
+        if (SaveManager.Instance != null)
+            SaveManager.Instance.SaveSettings();
     }
 
-    public void SetMasterVolume(float value)
+    void RefreshSliders()
     {
-        AudioManager.Instance.SetMasterVolume(value);
+        if (AudioManager.Instance == null) return;
+
+        _masterSlider.SetValueWithoutNotify(AudioManager.Instance.MasterVol);
+        _musicSlider.SetValueWithoutNotify(AudioManager.Instance.MusicVol);
+        _voiceSlider.SetValueWithoutNotify(AudioManager.Instance.VoiceVol);
+        _sfxSlider.SetValueWithoutNotify(AudioManager.Instance.SFXVol);
+        _uiSlider.SetValueWithoutNotify(AudioManager.Instance.UIVol);
     }
 
-    public void SetMusicVolume(float value)
-    {
-        AudioManager.Instance.SetMusicVolume(value);
-    }
-
-    public void SetSFXVolume(float value)
-    {
-        AudioManager.Instance.SetSFXVolume(value);
-    }
-
-    public void SetUIVolume(float value)
-    {
-        AudioManager.Instance.SetUIVolume(value);
-    }
-
-    public void SetVoiceVolume(float value)
-    {
-        AudioManager.Instance.SetVoiceVolume(value);
-    }
+    public void SetMasterVolume(float value) => AudioManager.Instance.SetMasterVolume(value);
+    public void SetMusicVolume(float value) => AudioManager.Instance.SetMusicVolume(value);
+    public void SetSFXVolume(float value) => AudioManager.Instance.SetSFXVolume(value);
+    public void SetUIVolume(float value) => AudioManager.Instance.SetUIVolume(value);
+    public void SetVoiceVolume(float value) => AudioManager.Instance.SetVoiceVolume(value);
 }

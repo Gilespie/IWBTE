@@ -8,6 +8,8 @@ public class CraneMovement : MonoBehaviour
 
     [Header("Rotation")]
     [SerializeField] float _rotateSpeed = 30f;
+    [SerializeField] float _minYRotation = 0f;
+    [SerializeField] float _maxYRotation = 180f;
 
     [Header("Lift")]
     [SerializeField] float _liftSpeed = 2f;         
@@ -21,13 +23,22 @@ public class CraneMovement : MonoBehaviour
     float _rotateCurrent;
     float _liftCurrent;
 
-    // Вызывать из рычага: -1 = влево, 1 = вправо, 0 = стоп
+    float _currentYAngle;
+    Quaternion _startLocalRotation;
+
+    void Start()
+    {
+        _startLocalRotation = _head.localRotation;
+
+        float startY = Mathf.DeltaAngle(0f, _head.localEulerAngles.y);
+        _currentYAngle = Mathf.Clamp(startY, _minYRotation, _maxYRotation);
+    }
+
     public void Rotate(float axis)
     {
         _rotateInput = Mathf.Clamp(axis, -1f, 1f);
     }
 
-    // Вызывать из рычага: 1 = вверх, -1 = вниз, 0 = стоп
     public void MoveLoad(float axis)
     {
         _liftInput = Mathf.Clamp(axis, -1f, 1f);
@@ -61,7 +72,12 @@ public class CraneMovement : MonoBehaviour
     {
         if (Mathf.Abs(_rotateCurrent) < 0.001f) return;
 
-        _head.Rotate(Vector3.up, _rotateCurrent * _rotateSpeed * Time.deltaTime, Space.Self);
+        _currentYAngle = Mathf.Clamp(
+            _currentYAngle + _rotateCurrent * _rotateSpeed * Time.deltaTime,
+            _minYRotation,
+            _maxYRotation);
+
+        _head.localRotation = Quaternion.Euler(0f, _currentYAngle, 0f);
     }
 
     void ApplyLift()

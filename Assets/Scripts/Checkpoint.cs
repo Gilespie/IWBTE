@@ -4,17 +4,15 @@ public class Checkpoint : MonoBehaviour
 {
     [SerializeField] Collider _collider;
 
+    [Tooltip("Индекс главы в LoadScreen, которую открывает этот чекпоинт")]
+    [SerializeField] int _chapterIndex = 1;
+
     void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponent<Character>())
-        {
-            EventManager.Trigger(EventType.OnCheckpoint);
-            _collider.enabled = false;
-        }
-    }
+        if (!other.GetComponent<Character>()) return;
 
-    public void SaveCheckpointData()
-    {
-
+        SaveManager.Instance.UnlockChapter(_chapterIndex);
+        EventManager.Trigger(EventType.OnCheckpoint, _chapterIndex);
+        _collider.enabled = false;
     }
 }

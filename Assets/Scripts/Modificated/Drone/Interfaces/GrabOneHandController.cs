@@ -8,6 +8,8 @@ public class GrabOneHandController : MonoBehaviour
     [SerializeField] Transform _rightHandTarget;
     [SerializeField] private float _blendTime = 0.25f;
     [SerializeField] private float _followSpeed = 10f;
+    [SerializeField] private float _rotationSpeed = 15f;
+    [SerializeField] private Vector3 _handRotationOffset;
 
     private Transform _currentAnchor;
     private Coroutine _blendRoutine;
@@ -18,9 +20,12 @@ public class GrabOneHandController : MonoBehaviour
         _currentAnchor = anchor;
         _isActive = true;
 
-        _rightHandTarget.position = anchor.position;
-        _rightHandTarget.rotation = anchor.rotation;
-
+        /*_rightHandTarget.position = anchor.position;
+        _rightHandTarget.rotation = anchor.rotation;*/
+       
+        _rightHandTarget.SetPositionAndRotation(
+            anchor.position,
+            anchor.rotation * Quaternion.Euler(_handRotationOffset));
         StartBlend(1f);
     }
 
@@ -31,13 +36,25 @@ public class GrabOneHandController : MonoBehaviour
         StartBlend(0f);
     }
 
-    private void LateUpdate()
+    /*private void LateUpdate()
     {
         if (!_isActive || _currentAnchor == null) return;
 
         _rightHandTarget.position = Vector3.Lerp(_rightHandTarget.position, _currentAnchor.position, _followSpeed * Time.deltaTime);
         Vector3 defaultRotation = new(-306, 0, 0);
         _rightHandTarget.rotation = Quaternion.Euler(defaultRotation);
+    }*/
+
+    private void LateUpdate()
+    {
+        if (!_isActive || _currentAnchor == null) return;
+
+        _rightHandTarget.position = Vector3.Lerp(
+            _rightHandTarget.position, _currentAnchor.position, _followSpeed * Time.deltaTime);
+
+        Quaternion targetRot = _currentAnchor.rotation * Quaternion.Euler(_handRotationOffset);
+        _rightHandTarget.rotation = Quaternion.Slerp(
+            _rightHandTarget.rotation, targetRot, _rotationSpeed * Time.deltaTime);
     }
 
     private void StartBlend(float target)
