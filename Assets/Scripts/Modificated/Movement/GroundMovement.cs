@@ -74,6 +74,7 @@ public class GroundMovement : MonoBehaviour
         box.Rb.MovePosition(box.Rb.position + new Vector3(_smoothedDirection.x, 0f, _smoothedDirection.z) * _currentSpeed * Time.fixedDeltaTime);
     }
 
+
     public void Swimming(Vector3 dir)
     {
         SetDirectionAndSpeed(dir, _swimSpeed);

@@ -56,6 +56,8 @@ public class IntroSequence : MonoBehaviour, ISaveable
         if (_introPlayed)
         {
             SetTitleAlpha(0f);
+
+            if (_camera != null) _camera.ApplyPostIntroMode();
             yield break;
         }
 

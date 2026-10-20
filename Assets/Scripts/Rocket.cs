@@ -1,40 +1,36 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.VFX;
 
 public class Rocket : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] private float _speedFly = 55f;
-    [SerializeField] private float _radius = 5f;
-    [SerializeField] private float _damage = 500f;
-    [SerializeField] private float _forceExplosion = 50f;
-    [SerializeField] private float _forceUpExplosion = 5f;
-    [SerializeField] private float _stopDistance = 1f;
-    [SerializeField] private LayerMask _player;
-
+    [SerializeField] float _speedFly = 55f;
+    [SerializeField] float _radius = 5f;
+    [SerializeField] float _damage = 500f;
+    [SerializeField] float _forceExplosion = 50f;
+    [SerializeField] float _forceUpExplosion = 5f;
+    [SerializeField] float _stopDistance = 1f;
+    [SerializeField] LayerMask _player;
     [SerializeField] float _timeToDeactivate = 5f;
 
-    [Header("References")]
-    [SerializeField] GameObject _explosionPrefab;
-    [SerializeField] VisualEffect _explosionVFX;
+    [Header("Audio")]
+    [SerializeField] AudioSource _audiosource;
     [SerializeField] AudioClip _flyClip;
+
+    [Header("References")]
+    [SerializeField] Rigidbody _rb;
+    [SerializeField] GameObject _explosionPrefab;
     [SerializeField] GameObject _mesh;
     [SerializeField] Collider _col;
     [SerializeField] ParticleSystem _trailParticle;
-    private Transform _target;
-    private Rigidbody _rb;
-    private AudioSource _audiosource;
-    private Vector3 _direction;
-    [SerializeField] bool _isVFX;
+    Transform _target;
+    Vector3 _direction;
     bool _isExploded;
 
     private void Awake()
     {
-        _audiosource = GetComponent<AudioSource>();
         _audiosource.clip = _flyClip;
         _audiosource.Play();
-        _rb = GetComponent<Rigidbody>();
     }
 
     private void FixedUpdate()
@@ -44,10 +40,12 @@ public class Rocket : MonoBehaviour
 
         Vector3 dir = _target.position - transform.position;
 
-        if (dir.sqrMagnitude <= _stopDistance * _stopDistance)
-        {
-            Explode(transform.position);
+        float step = _speedFly * Time.fixedDeltaTime;
+        float dist = dir.magnitude;
 
+        if (dist <= Mathf.Max(_stopDistance, step))
+        {
+            Explode(_target.position);
             return;
         }
 
@@ -68,10 +66,8 @@ public class Rocket : MonoBehaviour
     {
         Explosion(point);
 
-        if (!_isVFX)
-            Instantiate(_explosionPrefab, point, _explosionPrefab.transform.rotation);
-        else
-            Instantiate(_explosionVFX, point, _explosionVFX.transform.rotation);
+        Instantiate(_explosionPrefab, point, _explosionPrefab.transform.rotation);
+
         CameraShake.Instance.ActiveShake();
 
         _mesh.SetActive(false);

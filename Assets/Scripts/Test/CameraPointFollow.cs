@@ -1,8 +1,12 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Rendering;
-
-public class CameraPointFollow : MonoBehaviour
+public enum CameraMoveMode
+{
+    MoveTowards,
+    Lerp
+}
+public class CameraPointFollow : MonoBehaviour, ISaveable
 {
     [Header("Camera Follow Settings")]
     [SerializeField] private Transform _target;
@@ -10,7 +14,7 @@ public class CameraPointFollow : MonoBehaviour
     [SerializeField] private Vector3 _offset;
 
     [Header("Lerping Settings")]
-    [SerializeField] bool _lerp = false;
+    [SerializeField] CameraMoveMode _moveMode = CameraMoveMode.MoveTowards;
     [SerializeField] float _lerpRate = 3f;
     [SerializeField] float _moveTowardsRate = 3f;
 
@@ -23,12 +27,19 @@ public class CameraPointFollow : MonoBehaviour
     private Vector3 _shakeOffset;
 
     private Transform _cameraFixedPoint = null;
+    CameraMoveMode _defaultMoveMode;
+    float _defaultLerpRate;
+    float _defaultMoveTowardsRate;
 
     private void Awake()
     {
         _defaultOffset = _offset;
-        //_lerp = true;
+        _defaultMoveMode = CameraMoveMode.Lerp;
+        _defaultLerpRate = _lerpRate;
+        _defaultMoveTowardsRate = _moveTowardsRate;
+
         GameManager.Instance.CameraPointFollow = this;
+        SaveManager.Instance.Register(this);
     }
 
     private void Start()
@@ -60,21 +71,17 @@ public class CameraPointFollow : MonoBehaviour
             targetPos = _target.position + _offset + _shakeOffset;
         }
 
-        if(_lerp)
+        switch (_moveMode)
         {
-            transform.position = Vector3.Lerp(
-                transform.position,
-                targetPos,
-                Time.deltaTime * _lerpRate
-            );
-        }
-        else
-        {
-            transform.position = Vector3.MoveTowards(
-                transform.position,
-                targetPos,
-                Time.deltaTime * _moveTowardsRate
-            );
+            case CameraMoveMode.Lerp:
+                transform.position = Vector3.Lerp(
+                    transform.position, targetPos, Time.deltaTime * _lerpRate);
+                break;
+
+            case CameraMoveMode.MoveTowards:
+                transform.position = Vector3.MoveTowards(
+                    transform.position, targetPos, Time.deltaTime * _moveTowardsRate);
+                break;
         }
 
         if (_lookTarget != null)
@@ -87,6 +94,12 @@ public class CameraPointFollow : MonoBehaviour
                 Time.deltaTime * 5f
             );
         }
+    }
+
+    private void OnDestroy()
+    {
+        if (SaveManager.Instance != null)
+            SaveManager.Instance.Unregister(this);
     }
 
     public void SetUnderwaterVolume(Volume volume)
@@ -106,7 +119,6 @@ public class CameraPointFollow : MonoBehaviour
 
         _filter.enabled = true;
         _audioSource.enabled = true;
-        Debug.Log("Entered water");
     }
 
     public void ExitWater()
@@ -148,6 +160,7 @@ public class CameraPointFollow : MonoBehaviour
         _cameraFixedPoint = null;
         _lookTarget = _target;
         _offset = _defaultOffset;
+        ResetMoveMode();
     }
 
     public void SetCameraOffset(Vector3 offset)
@@ -161,9 +174,22 @@ public class CameraPointFollow : MonoBehaviour
         _shakeOffset = offset;
     }
 
-    public void ActiveLerpSmoothing(bool value)
+    public void SetMoveMode(CameraMoveMode mode, float speed = -1f)
     {
-        _lerp = value;
+        _moveMode = mode;
+
+        if (speed > 0f)
+        {
+            if (mode == CameraMoveMode.Lerp) _lerpRate = speed;
+            else _moveTowardsRate = speed;
+        }
+    }
+
+    public void ResetMoveMode()
+    {
+        _moveMode = _defaultMoveMode;
+        _lerpRate = _defaultLerpRate;
+        _moveTowardsRate = _defaultMoveTowardsRate;
     }
 
     public void SetIntroPoint(Transform point, Transform lookTarget)
@@ -187,6 +213,29 @@ public class CameraPointFollow : MonoBehaviour
         StartCoroutine(ResetIntro());
     }
 
+    public void SetMoveMode(CameraMoveMode mode, float speed = -1f, bool asDefault = false)
+    {
+        _moveMode = mode;
+
+        if (speed > 0f)
+        {
+            if (mode == CameraMoveMode.Lerp) _lerpRate = speed;
+            else _moveTowardsRate = speed;
+        }
+
+        if (asDefault)
+        {
+            _defaultMoveMode = _moveMode;
+            _defaultLerpRate = _lerpRate;
+            _defaultMoveTowardsRate = _moveTowardsRate;
+        }
+    }
+
+    public void ApplyPostIntroMode()
+    {
+        SetMoveMode(CameraMoveMode.Lerp, -1f, true);
+    }
+
     IEnumerator ResetIntro()
     {
         _cameraFixedPoint = null;
@@ -195,8 +244,20 @@ public class CameraPointFollow : MonoBehaviour
         yield return new WaitForSeconds(5f);
 
         _lookTarget = _target;
-        ActiveLerpSmoothing(true);
-        _lerp = true;
-        yield return null;
+        SetMoveMode(CameraMoveMode.Lerp, -1f, true);
+    }
+
+    public void CaptureState(SaveGameData data)
+    {
+        data.HasCameraState = true;
+        data.CameraOffset = _defaultOffset;
+    }
+
+    public void RestoreState(SaveGameData data)
+    {
+        if (!data.HasCameraState) return;
+
+        _defaultOffset = data.CameraOffset;
+        _offset = _defaultOffset;
     }
 }

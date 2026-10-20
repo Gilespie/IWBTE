@@ -288,7 +288,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 60
+      scalar: 10
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5018,7 +5018,6 @@ GameObject:
   - component: {fileID: 2116881041416865256}
   - component: {fileID: 30027393990535172}
   - component: {fileID: 6325095223687927339}
-  - component: {fileID: 4561665826628676963}
   m_Layer: 0
   m_Name: Rocket
   m_TagString: Untagged
@@ -5061,19 +5060,19 @@ MonoBehaviour:
   _damage: 500
   _forceExplosion: 50
   _forceUpExplosion: 5
-  _stopDistance: 1
+  _stopDistance: 2
   _player:
     serializedVersion: 2
     m_Bits: 4294967295
   _timeToDeactivate: 6
-  _explosionPrefab: {fileID: 0}
-  _explosionVFX: {fileID: 4370504679461770553, guid: c178a30f3b3baea4f951f7453e9b5447,
-    type: 3}
+  _audiosource: {fileID: 2116881041416865256}
   _flyClip: {fileID: 8300000, guid: 7465eddf9165ce840aeeeb480fdc27c3, type: 3}
+  _rb: {fileID: 6325095223687927339}
+  _explosionPrefab: {fileID: 1372261309149600535, guid: c178a30f3b3baea4f951f7453e9b5447,
+    type: 3}
   _mesh: {fileID: 1464309269808841767}
   _col: {fileID: 30027393990535172}
   _trailParticle: {fileID: 4479476689856282913}
-  _isVFX: 1
 --- !u!82 &2116881041416865256
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5222,21 +5221,3 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &4561665826628676963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3141808199913613412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e560a0db855a4642bb6aaf9bf1ba6ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isUpdateEnable: 1
-  _activationLayer:
-    serializedVersion: 2
-    m_Bits: 262144
-  _range: 50
-  _speed: 5.62

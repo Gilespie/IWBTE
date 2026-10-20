@@ -17,8 +17,13 @@ public class CameraZone : MonoBehaviour
     [SerializeField] bool _overrideLookOnly = false;
     [SerializeField] bool _overrideCameraOffset = false;
     [SerializeField] bool _isTriggerOnce = false;
-    [SerializeField] bool _isLerpingSpeed = false;
     bool _alreadyTriggered;
+
+    [Header("Move Mode")]
+    [SerializeField] bool _overrideMoveMode = false;
+    [SerializeField] CameraMoveMode _moveMode = CameraMoveMode.MoveTowards;
+    [Tooltip("<= 0 — use default speed of camera")]
+    [SerializeField] float _moveSpeed = -1f;
 
     [SerializeField] bool _lookAtTargetTemporarily = false;
     [SerializeField] float _timeToView = 3f;
@@ -27,40 +32,38 @@ public class CameraZone : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (_isTriggerOnce && _alreadyTriggered) return;
+        if (!other.TryGetComponent(out Character character)) return;
 
-        if (other.TryGetComponent(out Character character))
+        if (_overrideMoveMode)
         {
-            if (_overridePositionAndLook)
-            {
-                _camera.SetOverridePosition(_overridePositionPoint);
-                _camera.SetTargetView(_overrideLookTarget);
-            }
-            if(_overridePositionOnly)
-            {
-                _camera.SetOverridePosition(_overridePositionPoint);
-            }
-            if (_overrideLookOnly)
-            {
-                _camera.SetTargetView(_overrideLookTarget);
-            }
+            _camera.SetMoveMode(_moveMode, _moveSpeed);
+        }
 
-            if (_overrideCameraOffset)
-            {
-                _camera.SetCameraOffset(_offset);
-            }
+        if (_overridePositionAndLook)
+        {
+            _camera.SetOverridePosition(_overridePositionPoint);
+            _camera.SetTargetView(_overrideLookTarget);
+        }
+        if (_overridePositionOnly)
+        {
+            _camera.SetOverridePosition(_overridePositionPoint);
+        }
+        if (_overrideLookOnly)
+        {
+            _camera.SetTargetView(_overrideLookTarget);
+        }
 
-            if (_isTriggerOnce)
-                _alreadyTriggered = true;
+        if (_overrideCameraOffset)
+        {
+            _camera.SetCameraOffset(_offset);
+        }
 
-            if (_lookAtTargetTemporarily)
-            {
-                _camera.LookAtTargetTemporary(_overrideLookTarget, _timeToView);
-            }
+        if (_isTriggerOnce)
+            _alreadyTriggered = true;
 
-            if(_isLerpingSpeed)
-            {
-                _camera.ActiveLerpSmoothing(false);
-            }
+        if (_lookAtTargetTemporarily)
+        {
+            _camera.LookAtTargetTemporary(_overrideLookTarget, _timeToView);
         }
     }
 

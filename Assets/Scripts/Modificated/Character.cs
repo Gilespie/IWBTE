@@ -152,12 +152,21 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
 
         if (_isPushingNow)
         {
+            Vector3 worldDir = GetPushInput();
+            Vector3 localDir = Quaternion.Inverse(_characterRotator.Mesh.rotation) * worldDir;
+
+            _animationController.SetFloat(AnimParams.XInput, localDir.x, 0.1f);
+            _animationController.SetFloat(AnimParams.ZInput, localDir.z, 0.1f);
+        }
+
+        /*if (_isPushingNow)
+        {
             float xInput = _inputController.Direction.x;
             float zInput = _inputController.Direction.z;
 
             _animationController.SetFloat(AnimParams.XInput, xInput);
             _animationController.SetFloat(AnimParams.ZInput, zInput);
-        }
+        }*/
 
         _animationController.SetFloat(AnimParams.Speed, _movement.CurrentSpeed);
 
@@ -264,6 +273,10 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         else if(_isWalking)
         {
             _movement.Walk(_inputController.Direction);
+        }
+        else if (_isPushingNow)
+        {
+            _movement.Push(GetPushInput(), _currentBox);
         }
         else
         {
@@ -532,9 +545,13 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         _isPushingNow = true;
         _currentBox = box;
 
-        Vector3 dir = (box.transform.position - transform.position).normalized;
+        Vector3 dir = box.PushDirection;
         dir.y = 0f;
         _characterRotator.Mesh.forward = dir;
+
+        /*Vector3 dir = (box.transform.position - transform.position).normalized;
+        dir.y = 0f;
+        _characterRotator.Mesh.forward = dir;*/
         _animationController.SetLayerWeight(1f);
     }
 
@@ -547,6 +564,14 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         //_currentPushable = null;
 
         _animationController.SetLayerWeight(0f);
+        _animationController.SetFloat(AnimParams.XInput, 0f);
+        _animationController.SetFloat(AnimParams.ZInput, 0f);
+    }
+
+    Vector3 GetPushInput()
+    {
+        if (_currentBox == null) return Vector3.zero;
+        return Vector3.Project(_inputController.Direction, _currentBox.PushDirection);
     }
 
     IEnumerator ResetPress()

@@ -1,3 +1,5 @@
+using UnityEngine;
+
 [System.Serializable]
 public class SaveGameData
 {
@@ -8,4 +10,11 @@ public class SaveGameData
     public string СurrentSceneName;
     public bool IsNewGame;
     public bool IntroPlayed;
+
+    [Header("Camera")]
+    public bool HasCameraState;
+    public int CameraMoveMode;
+    public float CameraLerpRate;
+    public float CameraMoveTowardsRate;
+    public Vector3 CameraOffset;
 }

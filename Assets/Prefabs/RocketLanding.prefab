@@ -233,15 +233,14 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   _timeToDeactivate: 30
-  _explosionPrefab: {fileID: 7101300429580314952, guid: efbb3fa6986ef134fa8358660b87bffe,
-    type: 3}
-  _explosionVFX: {fileID: 4370504679461770553, guid: c178a30f3b3baea4f951f7453e9b5447,
-    type: 3}
+  _audiosource: {fileID: 2116881041416865256}
   _flyClip: {fileID: 8300000, guid: 7465eddf9165ce840aeeeb480fdc27c3, type: 3}
+  _rb: {fileID: 6325095223687927339}
+  _explosionPrefab: {fileID: 5682606877458538206, guid: 0f55cd30e67413348b0fa02fd613b8e5,
+    type: 3}
   _mesh: {fileID: 1464309269808841767}
   _col: {fileID: 30027393990535172}
   _trailParticle: {fileID: 4479476689856282913}
-  _isVFX: 0
 --- !u!82 &2116881041416865256
 AudioSource:
   m_ObjectHideFlags: 0

@@ -7,6 +7,7 @@ public class Trigger : MonoBehaviour
     [SerializeField] protected bool _isOnce = false;
     [SerializeField] protected UnityEvent _actions;
     [SerializeField] protected UnityEvent _actionsStay;
+    [SerializeField] protected UnityEvent _actionsExit;
     [SerializeField] protected Collider _collider;
 
     private void Awake()
@@ -28,6 +29,15 @@ public class Trigger : MonoBehaviour
         if (!other.TryGetComponent<Character>(out _)) return;
         
         _actionsStay?.Invoke();
+    }
+
+    protected virtual void OnTriggerExit(Collider other)
+    {
+        if (!other.TryGetComponent<Character>(out _)) return;
+
+        _actionsExit?.Invoke();
+
+        if (_isOnce) _collider.enabled = false;
     }
 
     [ContextMenu("Activate Trigger")]

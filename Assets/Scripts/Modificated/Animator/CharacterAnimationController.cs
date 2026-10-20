@@ -25,4 +25,9 @@ public class CharacterAnimationController : MonoBehaviour
     {
         _animator.SetLayerWeight(_pushLayer, weight);
     }
+
+    public void SetFloat(int param, float value, float damp)
+    {
+        _animator.SetFloat(param, value, damp, Time.deltaTime);
+    }
 }

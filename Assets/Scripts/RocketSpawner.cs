@@ -3,7 +3,8 @@ using UnityEngine;
 public enum TargetMode
 {
     Random,
-    Sequential
+    Sequential,
+    AllTargets
 }
 
 public class RocketSpawner : MonoBehaviour
@@ -16,6 +17,8 @@ public class RocketSpawner : MonoBehaviour
     [SerializeField] float _timeToSpawn = 3f;
     [SerializeField] bool _isLoop = true;
 
+    [Header("All Targets Mode")]
+    [SerializeField] float _delayBetweenRockets = 0f;
     [SerializeField] private TargetMode _targetMode;
 
     int _currentIndex = 0;
@@ -23,6 +26,12 @@ public class RocketSpawner : MonoBehaviour
 
     void OnEnable()
     {
+        if (_targetMode == TargetMode.AllTargets)
+        {
+            _attackRoutine = StartCoroutine(FireAllTargetsRoutine());
+            return;
+        }
+
         if (_isLoop)
         {
             _attackRoutine = StartCoroutine(AirAttackLoop());
@@ -38,6 +47,7 @@ public class RocketSpawner : MonoBehaviour
         if (_attackRoutine != null)
         {
             StopCoroutine(_attackRoutine);
+            _attackRoutine = null;
         }
     }
 
@@ -51,13 +61,35 @@ public class RocketSpawner : MonoBehaviour
         }
     }
 
+    IEnumerator FireAllTargetsRoutine()
+    {
+        if (_targets != null)
+        {
+            for (int i = 0; i < _targets.Length; i++)
+            {
+                if (_targets[i] == null) continue;
+
+                SpawnRocket(_targets[i]);
+
+                if (_delayBetweenRockets > 0f)
+                    yield return new WaitForSeconds(_delayBetweenRockets);
+            }
+        }
+
+        _attackRoutine = null;
+        gameObject.SetActive(false);
+    }
+
     void FireSingleRocket()
     {
-        Transform target = GetTarget();
-
-        if (_targets == null)
+        if (_targets == null || _targets.Length == 0)
             return;
 
+        SpawnRocket(GetTarget());
+    }
+
+    void SpawnRocket(Transform target)
+    {
         GameObject rocket = Instantiate(_rocketPrefab, _spawnPosition.position, Quaternion.identity);
 
         Rocket rocketComponent = rocket.GetComponent<Rocket>();
