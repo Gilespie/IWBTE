@@ -11,4 +11,5 @@ public enum EventType
     OnFalled,
     OnSceneTransition,
     OnPaused,
+    OnRocketExploded,
 }

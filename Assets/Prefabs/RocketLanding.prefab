@@ -186,7 +186,6 @@ GameObject:
   - component: {fileID: 2116881041416865256}
   - component: {fileID: 30027393990535172}
   - component: {fileID: 6325095223687927339}
-  - component: {fileID: 4561665826628676963}
   m_Layer: 0
   m_Name: RocketLanding
   m_TagString: Untagged
@@ -389,24 +388,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &4561665826628676963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3141808199913613412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e560a0db855a4642bb6aaf9bf1ba6ae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _isUpdateEnable: 1
-  _activationLayer:
-    serializedVersion: 2
-    m_Bits: 262144
-  _range: 50
-  _speed: 5.62
 --- !u!1001 &7005828799702169437
 PrefabInstance:
   m_ObjectHideFlags: 0

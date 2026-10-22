@@ -66,7 +66,8 @@ public class Rocket : MonoBehaviour
     {
         Explosion(point);
 
-        Instantiate(_explosionPrefab, point, _explosionPrefab.transform.rotation);
+        if(_explosionPrefab != null) Instantiate(_explosionPrefab, point, _explosionPrefab.transform.rotation);
+        
 
         CameraShake.Instance.ActiveShake();
 

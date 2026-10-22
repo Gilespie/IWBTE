@@ -182,11 +182,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2420404099572891180}
-  - component: {fileID: 2982266242517325431}
   - component: {fileID: 2116881041416865256}
   - component: {fileID: 30027393990535172}
   - component: {fileID: 6325095223687927339}
-  - component: {fileID: 4561665826628676963}
+  - component: {fileID: 4447684116593849211}
   m_Layer: 0
   m_Name: RocketLandingNear
   m_TagString: Untagged
@@ -211,36 +210,6 @@ Transform:
   - {fileID: 8995775719131494194}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2982266242517325431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3141808199913613412}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c6236d4f59288ed428c49d926f73ecf9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _speedFly: 200
-  _radius: 14
-  _damage: 500
-  _forceExplosion: 50
-  _forceUpExplosion: 5
-  _stopDistance: 2
-  _player:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  _timeToDeactivate: 30
-  _audiosource: {fileID: 2116881041416865256}
-  _flyClip: {fileID: 8300000, guid: 7465eddf9165ce840aeeeb480fdc27c3, type: 3}
-  _rb: {fileID: 6325095223687927339}
-  _explosionPrefab: {fileID: 7101300429580314952, guid: efbb3fa6986ef134fa8358660b87bffe,
-    type: 3}
-  _mesh: {fileID: 1464309269808841767}
-  _col: {fileID: 30027393990535172}
-  _trailParticle: {fileID: 4479476689856282913}
 --- !u!82 &2116881041416865256
 AudioSource:
   m_ObjectHideFlags: 0
@@ -389,7 +358,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 2
---- !u!114 &4561665826628676963
+--- !u!114 &4447684116593849211
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -398,15 +367,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 3141808199913613412}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e560a0db855a4642bb6aaf9bf1ba6ae, type: 3}
+  m_Script: {fileID: 11500000, guid: c6236d4f59288ed428c49d926f73ecf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isUpdateEnable: 1
-  _activationLayer:
+  _speedFly: 200
+  _radius: 5
+  _damage: 500
+  _forceExplosion: 50
+  _forceUpExplosion: 5
+  _stopDistance: 0.5
+  _player:
     serializedVersion: 2
-    m_Bits: 262144
-  _range: 50
-  _speed: 5.62
+    m_Bits: 384
+  _timeToDeactivate: 5
+  _audiosource: {fileID: 2116881041416865256}
+  _flyClip: {fileID: 8300000, guid: 7465eddf9165ce840aeeeb480fdc27c3, type: 3}
+  _rb: {fileID: 6325095223687927339}
+  _explosionPrefab: {fileID: 0}
+  _mesh: {fileID: 1464309269808841767}
+  _col: {fileID: 30027393990535172}
+  _trailParticle: {fileID: 4479476689856282913}
 --- !u!1001 &7005828799702169437
 PrefabInstance:
   m_ObjectHideFlags: 0

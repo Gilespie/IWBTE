@@ -10,7 +10,7 @@ public enum TargetMode
 public class RocketSpawner : MonoBehaviour
 {
     [Header("Refs")]
-    [SerializeField] GameObject _rocketPrefab;
+    [SerializeField] Rocket _rocketPrefab;
     [SerializeField] Transform _spawnPosition;
     [SerializeField] Transform[] _targets;
 
@@ -90,9 +90,7 @@ public class RocketSpawner : MonoBehaviour
 
     void SpawnRocket(Transform target)
     {
-        GameObject rocket = Instantiate(_rocketPrefab, _spawnPosition.position, Quaternion.identity);
-
-        Rocket rocketComponent = rocket.GetComponent<Rocket>();
+        Rocket rocketComponent = Instantiate(_rocketPrefab, _spawnPosition.position, Quaternion.identity);
 
         rocketComponent.SetTarget(target);
     }

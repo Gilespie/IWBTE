@@ -4,7 +4,7 @@ public class BabyCar : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if(!other.TryGetComponent<DronMovement>(out _)) return;
+        if(!other.TryGetComponent<Rocket>(out _)) return;
 
         gameObject.SetActive(false);
     }
