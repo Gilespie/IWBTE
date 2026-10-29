@@ -8,7 +8,7 @@ public class GrabRigController : MonoBehaviour
     [SerializeField] Transform _leftHandTarget;
     [SerializeField] Transform _rightHandTarget;
     [SerializeField] private float _blendTime = 0.25f;
-    [SerializeField] private float _followSpeed = 10f;
+    [SerializeField] private float _followSpeed = 15f;
 
     private IGrabbable _currentGrabbable;
     private Coroutine _blendRoutine;
@@ -19,10 +19,8 @@ public class GrabRigController : MonoBehaviour
         _currentGrabbable = grabbable;
         _isActive = true;
 
-        _leftHandTarget.position = grabbable.LeftHandPoint.position;
-        _leftHandTarget.rotation = grabbable.LeftHandPoint.rotation;
-        _rightHandTarget.position = grabbable.RightHandPoint.position;
-        _rightHandTarget.rotation = grabbable.RightHandPoint.rotation;
+        _leftHandTarget.SetPositionAndRotation(grabbable.LeftHandPoint.position, grabbable.LeftHandPoint.rotation);
+        _rightHandTarget.SetPositionAndRotation(grabbable.RightHandPoint.position, grabbable.RightHandPoint.rotation);
 
         StartBlend(1f);
     }
@@ -34,13 +32,20 @@ public class GrabRigController : MonoBehaviour
         StartBlend(0f);
     }
 
-    private void LateUpdate()
+    private void Update()
     {
         if (!_isActive || _currentGrabbable == null) return;
 
+        float k = 1f - Mathf.Exp(-_followSpeed * Time.deltaTime);
 
-        _leftHandTarget.position = Vector3.Lerp(_leftHandTarget.position, _currentGrabbable.LeftHandPoint.position, _followSpeed * Time.deltaTime);
-        _rightHandTarget.position = Vector3.Lerp(_rightHandTarget.position, _currentGrabbable.RightHandPoint.position, _followSpeed * Time.deltaTime);
+        Follow(_leftHandTarget, _currentGrabbable.LeftHandPoint, k);
+        Follow(_rightHandTarget, _currentGrabbable.RightHandPoint, k);
+    }
+
+    private static void Follow(Transform target, Transform point, float k)
+    {
+        target.position = Vector3.Lerp(target.position, point.position, k);
+        target.rotation = Quaternion.Slerp(target.rotation, point.rotation, k);
     }
 
     private void StartBlend(float target)

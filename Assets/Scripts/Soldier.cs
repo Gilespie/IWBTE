@@ -69,7 +69,6 @@ public class Soldier : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRot, Time.deltaTime * 5f);
         }
 
-        // Стрельба
         if (_fireTimer >= fireRate)
         {
             _fireTimer = 0;
@@ -84,7 +83,6 @@ public class Soldier : MonoBehaviour
         if(bulletPrefab != null)
         {
             GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-            bullet.GetComponent<Bullet>().AssingPlayer(_player);
         }
     }
 
@@ -113,31 +111,26 @@ public class Soldier : MonoBehaviour
 
         Gizmos.color = Color.yellow;
 
-        // Центр зрения
         Vector3 origin = transform.position + Vector3.up;
 
-        // Главный вектор (вперед)
         Vector3 forward = transform.forward * visionRange;
 
-        // Границы угла обзора
         Quaternion leftRotation = Quaternion.AngleAxis(-visionAngle, Vector3.up);
         Quaternion rightRotation = Quaternion.AngleAxis(visionAngle, Vector3.up);
 
         Vector3 leftBoundary = leftRotation * transform.forward * visionRange;
         Vector3 rightBoundary = rightRotation * transform.forward * visionRange;
 
-        // Рисуем линии
-        Gizmos.DrawRay(origin, forward);         // Прямо
-        Gizmos.DrawRay(origin, leftBoundary);    // Левая граница
-        Gizmos.DrawRay(origin, rightBoundary);   // Правая граница
+        Gizmos.DrawRay(origin, forward);         
+        Gizmos.DrawRay(origin, leftBoundary);    
+        Gizmos.DrawRay(origin, rightBoundary);   
 
-        // Можно добавить дугу (опционально, чуть сложнее)
         DrawViewArc(origin, visionRange, visionAngle, 30);
     }
 
     private void DrawViewArc(Vector3 origin, float radius, float angle, int segments)
     {
-        Gizmos.color = new Color(1f, 1f, 0f, 0.2f); // Полупрозрачный жёлтый
+        Gizmos.color = new Color(1f, 1f, 0f, 0.2f); 
 
         float startAngle = -angle;
         float angleStep = (angle * 2f) / segments;

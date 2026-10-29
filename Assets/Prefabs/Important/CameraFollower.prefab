@@ -30,13 +30,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6048697332106977812}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.17651358, y: -0.24477744, z: 0.15481019, w: -0.9407236}
+  m_LocalRotation: {x: 0.17651072, y: 0.24477588, z: -0.15481207, w: 0.9407242}
   m_LocalPosition: {x: 277.02197, y: 13.80611, z: -20.750088}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 3.268, y: -3.734, z: -0.829}
+  m_LocalEulerAnglesHint: {x: 24.072, y: 26.394, z: -12.966}
 --- !u!20 &7404322348811827068
 Camera:
   m_ObjectHideFlags: 0
@@ -76,7 +76,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1074651127
+    m_Bits: 1075699703
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -146,11 +146,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _target: {fileID: 0}
   _lookTarget: {fileID: 0}
-  _offset: {x: 0, y: 1.5, z: -8}
-  _isStaticZ: 1
-  _lerp: 1
+  _offset: {x: 0, y: 2.3, z: -8.5}
+  _moveMode: 0
   _lerpRate: 5
-  _moveTowardsRate: 5
+  _moveTowardsRate: 3
   _filter: {fileID: 0}
   _audioSource: {fileID: 6197824048934385541}
 --- !u!135 &2446991559553476276

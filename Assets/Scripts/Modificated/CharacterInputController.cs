@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[DefaultExecutionOrder(-70)]
 public class CharacterInputController : MonoBehaviour
 {
     InputsActions _inputActions;
@@ -46,10 +47,11 @@ public class CharacterInputController : MonoBehaviour
     void Awake()
     {
         _inputActions = SaveManager.Instance.InputActions;
-        ScreenManager.Instance.SetInputController(this);
         _inputActions.Global.Enable();
         EnableMovementMap();
+        
     }
+
 
     void OnEnable()
     {
@@ -68,6 +70,14 @@ public class CharacterInputController : MonoBehaviour
         _inputActions.Global.PauseCancel.started += HandlePause;
         _inputActions.Global.AnyKey.started += HandleAnyKey;
         _inputActions.Global.Submit.performed += HandleSubmit;
+    }
+
+    private void Start()
+    {
+        if(ScreenManager.Instance != null)
+        {
+            ScreenManager.Instance.SetInputController(this);
+        }
     }
 
     void Update()

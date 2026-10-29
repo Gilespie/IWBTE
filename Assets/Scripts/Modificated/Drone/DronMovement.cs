@@ -32,12 +32,26 @@ public class DronMovement : MonoBehaviour
     [SerializeField] private bool _startIdle = true;
 
     [Header("Explosion")]
+    [SerializeField] bool _canExplode = false;
     [SerializeField] float _explosionForce = 3000;
     [SerializeField] float _explosionUpForce = 1;
     [SerializeField] float _explosionRadius = 5;
     [SerializeField] float _explodeDistance = 3;
     [SerializeField] LayerMask _damageMask;
     [SerializeField] GameObject _explosiveVFX;
+
+    /*[Header("Shoot")]
+    [SerializeField] bool _canShoot = true;
+    [SerializeField] private Bullet _projectilePrefab;
+    [SerializeField] private Transform _firePoint;
+    [SerializeField] private float _fireRate = 1f;
+    [SerializeField] float _shootRange = 12f;        
+    [SerializeField] float _shootRangeHysteresis = 2f;
+    [SerializeField] float _aimDelay = 0.6f;       
+    [SerializeField] float _spread = 0.04f;          
+    [SerializeField] float _maxAimAngle = 20f;
+    [SerializeField] float _aimHeight = 1.2f;
+    [SerializeField] AudioClip _shootClip;*/
 
     [Header("SFX")]
     [SerializeField] AudioClip _detectClip;
@@ -49,6 +63,7 @@ public class DronMovement : MonoBehaviour
     [Header("Patrol")]
     [SerializeField] private Transform[] _patrolPoints;
     [SerializeField] bool _randomPatrol = true;
+    [SerializeField] Vector2 _waitTimeRange = new Vector2(2f, 4f);
 
     [Header("Obstacle Avoidance")]
     [SerializeField] private LayerMask _obstacleAvoidanceMask;
@@ -64,6 +79,8 @@ public class DronMovement : MonoBehaviour
 
     bool _isExploded = false;
     DroneStates _state = DroneStates.Patrol;
+    float _waitTimer;
+    bool _waiting;
 
     private void Start()
     {
@@ -238,43 +255,6 @@ public class DronMovement : MonoBehaviour
         }
     }
 
-    /*void MoveToTarget()
-    {
-        if (_state == DroneStates.Idle)
-            return;
-
-        Vector3 direction = (_currentTarget - transform.position).normalized;
-
-        Vector3 flatDirection = _currentTarget - transform.position;
-        flatDirection.y = 0;
-
-        if (direction.sqrMagnitude > 0.001f)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(flatDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.fixedDeltaTime);
-        }
-
-        if (_rb.linearVelocity.magnitude < _maxSpeedLimit)
-        {
-            if (_state == DroneStates.Chase)
-            {
-                _rb.AddForce(direction * _chaseSpeed, ForceMode.Force);
-            }
-            else
-            { 
-                _rb.AddForce(direction * _patrolSpeed, ForceMode.Force);
-            }
-        }
-
-        
-
-        if (_state == DroneStates.Patrol &&
-            (_currentTarget - transform.position).sqrMagnitude < _arrivalDistance * _arrivalDistance)
-        {
-            _currentTarget = GetNextTarget();
-        }
-    }*/
-
     Vector3 CalculateAvoidanceDirection(Vector3 desiredDirection)
     {
         if (_obstacleAvoidanceMask == 0)
@@ -344,10 +324,24 @@ public class DronMovement : MonoBehaviour
 
         _rb.linearVelocity = steerDirection * targetSpeed;
 
-        if (_state == DroneStates.Patrol &&
-            (_currentTarget - transform.position).sqrMagnitude < _arrivalDistance * _arrivalDistance)
+        if (_state == DroneStates.Patrol)
         {
-            _currentTarget = GetNextTarget();
+            if (_waiting)
+            {
+                _rb.linearVelocity = Vector3.zero;
+                _waitTimer -= Time.fixedDeltaTime;
+
+                if (_waitTimer <= 0f)
+                {
+                    _waiting = false;
+                    _currentTarget = GetNextTarget();
+                }
+            }
+            else if ((_currentTarget - transform.position).sqrMagnitude < _arrivalDistance * _arrivalDistance)
+            {
+                _waiting = true;
+                _waitTimer = Random.Range(_waitTimeRange.x, _waitTimeRange.y);
+            }
         }
     }
 
@@ -429,17 +423,6 @@ public class DronMovement : MonoBehaviour
             _beepTimer = interval;
         }
     }
-
-    /*private void OnDrawGizmos()
-    {
-        //fov
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(transform.position, transform.forward * _fovDistance);
-
-        *//*// радиус взрыва
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _explosionRadius);*//*
-    }*/
 
     private void OnDrawGizmos()
     {

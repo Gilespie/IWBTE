@@ -64,7 +64,8 @@ public class GroundMovement : MonoBehaviour
 
     public void Slide(Vector3 dir)
     {
-        SetDirectionAndSpeed(transform.forward * dir.z, _maxSlideSpeed);
+        SetDirectionAndSpeed(Vector3.forward * dir.z, _maxSlideSpeed);
+        Debug.Log(Vector3.forward * dir.z);
     }
 
     public void Push(Vector3 dir, PushableBox box)

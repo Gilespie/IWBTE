@@ -16,7 +16,6 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
     [SerializeField] CanStandRaycast _canStandUpRaycast;
     [SerializeField] Rigidbody _rb;
     [SerializeField] GroundMovement _movement;
-    //[SerializeField] MovementAdvance[] _movements;//0 - walk, 1 - sprint, 2 - crouch, 3 - swim, 4 - slope, 5 - push
     [SerializeField] CharacterRotator _characterRotator;
     public Transform MeshTransform => _characterRotator.Mesh;
     [SerializeField] Ragdoll _ragdoll;
@@ -27,15 +26,11 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
     [SerializeField] CharacterView _view;
 
     [SerializeField] PhysicsMaterial _slideMaterial;
-   // protected IExternalVelocity _externalVelocityProvider;
-   // protected Vector3 _externalVelocity;
 
-    //MovementAdvance _currentMovement;
     bool _isCrouching = false;
     bool _isSliding = false;
     bool _isSprinting = false;
     bool _isSwimming = false;
-    //bool _isPushing = false;
     bool _isGround = false;
     bool _isPressingNow = false;
     bool _isGrab = false;
@@ -44,14 +39,10 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
     bool _isOnAir = false;
     bool _isFalling = false;
     bool _isWalking = false;
-    //bool _wasSwimming = false;
-    //bool _wasSliding = false;
 
     PushableBox _currentBox;
     public PushableBox CurrentBox => _currentBox;
     WaterZone _currentWaterZone;
-    //private IPushable _currentPushable;
-
     private IGrabbable _currentGrabbable;
 
     IControllable _currentLever;
@@ -67,11 +58,6 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         EventManager.Subscribe(EventType.OnFalled, HandleFallDeath);
         EventManager.Subscribe(EventType.OnFinishOxygen, InstantKill);
         SaveManager.Instance.Register(this);
-    }
-
-    void Start()
-    {
-        //ChangeMovement(_movements[0]);
     }
 
     void Update()
@@ -150,23 +136,19 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         _isSprinting = _inputController.IsSprinting && !_isCrouching;
         _isWalking = _inputController.IsWalking && !_isCrouching && !_isSprinting;
 
-        if (_isPushingNow)
+        if (_isPushingNow && _currentBox != null)
         {
             Vector3 worldDir = GetPushInput();
-            Vector3 localDir = Quaternion.Inverse(_characterRotator.Mesh.rotation) * worldDir;
 
-            _animationController.SetFloat(AnimParams.XInput, localDir.x, 0.1f);
-            _animationController.SetFloat(AnimParams.ZInput, localDir.z, 0.1f);
+            Vector3 fwd = _currentBox.PushDirection.normalized;
+            Vector3 right = Vector3.Cross(Vector3.up, fwd);
+
+            float x = Vector3.Dot(worldDir, right); 
+            float z = Vector3.Dot(worldDir, fwd);
+
+            _animationController.SetFloat(AnimParams.XInput, x, 0.1f);
+            _animationController.SetFloat(AnimParams.ZInput, z, 0.1f);
         }
-
-        /*if (_isPushingNow)
-        {
-            float xInput = _inputController.Direction.x;
-            float zInput = _inputController.Direction.z;
-
-            _animationController.SetFloat(AnimParams.XInput, xInput);
-            _animationController.SetFloat(AnimParams.ZInput, zInput);
-        }*/
 
         _animationController.SetFloat(AnimParams.Speed, _movement.CurrentSpeed);
 
@@ -197,7 +179,6 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
     void TryStopLever()
     {
         if (_inputController.IsLeverHolding) return;
-        Debug.Log("lever try stop");
         _currentLever?.OnRelease();
 
         _oneHandGrabRig.Deactivate();
@@ -220,78 +201,45 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
 
         Vector3 swimDir = _isSwimming ? GetSwimDirection() : Vector3.zero;
 
-        //_externalVelocity = _externalVelocityProvider != null ? _externalVelocityProvider.ExternalVelocity : Vector3.zero;
-
-        //UpdateInputMap();
-
-        /*if (_isSwimming)
-        {
-            ChangeMovement(_movements[3]);
-        }
-        else if (_isPushingNow)
-        {
-            ChangeMovement(_movements[5]);
-        }
-        else if (_isSliding)
-        {
-            ChangeMovement(_movements[4]);
-        }
-        else if (_isCrouching)
-        {
-            ChangeMovement(_movements[2]);
-        }
-        else if (_isSprinting)
-        {
-            ChangeMovement(_movements[1]);
-        }
-        else
-        {
-            ChangeMovement(_movements[0]);
-        }*/
-
         if (_isSwimming)
         {
             _movement.Swimming(swimDir);
         }
         else if (_isPushingNow)
         {
-            _movement.Push(_inputController.Direction, _currentBox);
+            _movement.Push(GetPushInput(), _currentBox);
         }
         else if (_isSliding)
         {
             ChangePhysicMaterial();
             _movement.Slide(_inputController.Direction);
         }
-        else if (_isCrouching)
-        {
-            _movement.Crouch(_inputController.Direction);
-        }
-        else if (_isSprinting)
-        {
-            _movement.Sprint(_inputController.Direction);
-        }
-        else if(_isWalking)
-        {
-            _movement.Walk(_inputController.Direction);
-        }
-        else if (_isPushingNow)
-        {
-            _movement.Push(GetPushInput(), _currentBox);
-        }
         else
         {
             ResetPhysicsMaterial();
-            _movement.Run(_inputController.Direction);
+
+            if (_isCrouching)
+            {
+                _movement.Crouch(_inputController.Direction);
+            }
+            else if (_isSprinting)
+            {
+                _movement.Sprint(_inputController.Direction);
+            }
+            else if (_isWalking)
+            {
+                _movement.Walk(_inputController.Direction);
+            }
+            else
+            {
+                _movement.Run(_inputController.Direction);
+            }
         }
 
 
         TryCrouching();
         SlideCharacter();
         UpdateCollider();
-
-        //Vector3 dir = GetCurrentDirection();
-
-        //_currentMovement.Advance(dir, _externalVelocity);
 
         if (!_isPushingNow)
         {
@@ -315,21 +263,6 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
             SaveManager.Instance.Unregister(this);
     }
 
-    /*void UpdateInputMap()
-    {
-        if (_isSwimming == _wasSwimming && _isSliding == _wasSliding) return;
-
-        if (_isSwimming)
-            _inputController.EnableMovementMap(); //change other direction Vector3
-        else if (_isSliding)
-            _inputController.EnableMovementMap(); //cgange to float forward/backward
-        else
-            _inputController.EnableMovementMap();
-
-        _wasSwimming = _isSwimming;
-        _wasSliding = _isSliding;
-    }*/
-
     Vector3 GetSwimDirection()
     {
         Vector3 swimDir = _inputController.SwimDirection;
@@ -341,28 +274,6 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
 
         return swimDir;
     }
-
-    /*Vector3 GetCurrentDirection()
-    {
-        if (_isSwimming)
-        {
-            Vector3 swimDir = _inputController.SwimDirection;
-
-            if (_headPoint.position.y >= _currentWaterZone.BoundY && swimDir.y > 0f)
-            {
-                swimDir.y = 0f;
-            }
-
-            return swimDir;
-        }
-
-        if (_isSliding)
-        {
-            return new Vector3(0f, 0f, _inputController.SlideAxis);
-        }
-
-        return _inputController.Direction;
-    }*/
 
     void UpdateCollider()
     {
@@ -411,26 +322,6 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         _view.PlayVoice();
     }
 
-    /*void ChangeMovement(MovementAdvance newMovement)
-    {
-        if (_currentMovement == newMovement) return;
-
-        float prevSpeed = _currentMovement != null
-        ? _currentMovement.CurrentSpeed
-        : 0f;
-
-        _currentMovement = newMovement;
-        _currentMovement.Initialize(_rb);
-        _currentMovement.SetSpeed(prevSpeed);
-
-        _characterRotator.Initialize(_groundRaycast);
-        }
-
-    public void SetExternalVelocity(IExternalVelocity velocity)
-    {
-        _externalVelocityProvider = velocity;
-    }*/
-
     void TryCrouching()
     {
         if (!_isGround) return;
@@ -465,8 +356,6 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         _isSwimming = true;
         _rb.useGravity = false;
         _animationController.SetTrigger(AnimParams.StartSwimm);
-
-        //ChangeMovement(_movements[3]);
         
         _view.PlayBubbleVFX(true);
     }
@@ -476,8 +365,6 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         _isSwimming = false;
         _rb.useGravity = true;
         _animationController.SetTrigger(AnimParams.StopSwimm);
-
-        //ChangeMovement(_movements[0]);
 
         _view.PlayBubbleVFX(false);
     }
@@ -549,9 +436,6 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         dir.y = 0f;
         _characterRotator.Mesh.forward = dir;
 
-        /*Vector3 dir = (box.transform.position - transform.position).normalized;
-        dir.y = 0f;
-        _characterRotator.Mesh.forward = dir;*/
         _animationController.SetLayerWeight(1f);
     }
 
@@ -561,7 +445,6 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
 
         _isPushingNow = false;
         _currentBox = null;
-        //_currentPushable = null;
 
         _animationController.SetLayerWeight(0f);
         _animationController.SetFloat(AnimParams.XInput, 0f);
@@ -571,7 +454,17 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
     Vector3 GetPushInput()
     {
         if (_currentBox == null) return Vector3.zero;
-        return Vector3.Project(_inputController.Direction, _currentBox.PushDirection);
+
+        Vector3 input = _inputController.Direction;
+        if (input.sqrMagnitude < 0.01f) return Vector3.zero;
+
+        Vector3 fwd = _currentBox.PushDirection.normalized;
+        Vector3 right = Vector3.Cross(Vector3.up, fwd);
+
+        float f = Vector3.Dot(input, fwd);
+        float r = Vector3.Dot(input, right);
+
+        return Mathf.Abs(f) >= Mathf.Abs(r) ? fwd * f : right * r;
     }
 
     IEnumerator ResetPress()

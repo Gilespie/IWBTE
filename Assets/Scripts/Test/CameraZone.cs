@@ -1,6 +1,6 @@
 ﻿ using UnityEngine;
 
-[RequireComponent (typeof(BoxCollider))]
+[RequireComponent(typeof(BoxCollider))]
 public class CameraZone : MonoBehaviour
 {
     [SerializeField] CameraPointFollow _camera;
@@ -15,39 +15,41 @@ public class CameraZone : MonoBehaviour
     [SerializeField] bool _overridePositionAndLook = false;
     [SerializeField] bool _overridePositionOnly = false;
     [SerializeField] bool _overrideLookOnly = false;
-    [SerializeField] bool _overrideCameraOffset = false;
     [SerializeField] bool _isTriggerOnce = false;
-    bool _alreadyTriggered;
 
-    [Header("Move Mode")]
-    [SerializeField] bool _overrideMoveMode = false;
-    [SerializeField] CameraMoveMode _moveMode = CameraMoveMode.MoveTowards;
-    [Tooltip("<= 0 — use default speed of camera")]
-    [SerializeField] float _moveSpeed = -1f;
+    [Header("Camera Offset")]
+    [SerializeField] bool _overrideCameraOffset = false;
+    [SerializeField] Vector3 _offset;
+    [Tooltip("Time to smooth the camera offset. -1 = keep current camera value")]
+    [SerializeField] float _offsetSmoothTime = 1f;
 
+    [Header("Follow Rate")]
+    [SerializeField] bool _overrideFollowRate = false;
+    [SerializeField] float _followRate = 1.5f;
+
+    [Header("Temporary Look")]
     [SerializeField] bool _lookAtTargetTemporarily = false;
     [SerializeField] float _timeToView = 3f;
-    [SerializeField] Vector3 _offset; 
 
-    private void OnTriggerEnter(Collider other)
+    bool _alreadyTriggered;
+
+    void OnTriggerEnter(Collider other)
     {
         if (_isTriggerOnce && _alreadyTriggered) return;
-        if (!other.TryGetComponent(out Character character)) return;
 
-        if (_overrideMoveMode)
-        {
-            _camera.SetMoveMode(_moveMode, _moveSpeed);
-        }
+        if (!other.TryGetComponent(out Character character)) return;
 
         if (_overridePositionAndLook)
         {
             _camera.SetOverridePosition(_overridePositionPoint);
             _camera.SetTargetView(_overrideLookTarget);
         }
+
         if (_overridePositionOnly)
         {
             _camera.SetOverridePosition(_overridePositionPoint);
         }
+
         if (_overrideLookOnly)
         {
             _camera.SetTargetView(_overrideLookTarget);
@@ -55,19 +57,24 @@ public class CameraZone : MonoBehaviour
 
         if (_overrideCameraOffset)
         {
-            _camera.SetCameraOffset(_offset);
+            _camera.SetCameraOffset(_offset, _offsetSmoothTime);
         }
 
-        if (_isTriggerOnce)
-            _alreadyTriggered = true;
+        if (_overrideFollowRate)
+        {
+            _camera.SetFollowRate(_followRate);
+        }
 
         if (_lookAtTargetTemporarily)
         {
             _camera.LookAtTargetTemporary(_overrideLookTarget, _timeToView);
         }
+
+        if (_isTriggerOnce)
+            _alreadyTriggered = true;
     }
 
-    private void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other)
     {
         if (_isTriggerOnce) return;
 
