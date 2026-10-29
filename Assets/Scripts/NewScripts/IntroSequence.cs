@@ -56,6 +56,9 @@ public class IntroSequence : MonoBehaviour, ISaveable
         if (_introPlayed)
         {
             SetTitleAlpha(0f);
+            _camera.SnapToFollow();
+            _input.EnableMovementMap();
+            yield break;
         }
 
         _input.DisableAllInput();

@@ -192,6 +192,22 @@ public class CameraPointFollow : MonoBehaviour, ISaveable
         _offsetVelocity = Vector3.zero;
     }
 
+    public void SnapToFollow()
+    {
+        _cameraFixedPoint = null;
+        _lookTarget = _target;
+
+        transform.position = _target.position + _currentOffset;
+
+        _currentLookPoint = _target.position;
+        _lookFrom = _currentLookPoint;
+        _lookBlend = 1f;
+
+        Vector3 dir = _currentLookPoint - transform.position;
+        if (dir.sqrMagnitude > 0.0001f)
+            transform.rotation = Quaternion.LookRotation(dir);
+    }
+
     public void SetShakeOffset(Vector3 offset) => _shakeOffset = offset;
 
 
