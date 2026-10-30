@@ -29,6 +29,10 @@ public class Rat : MonoBehaviour, IDamageable
     [SerializeField] float _edgeCheckForward = 0.5f;
     [SerializeField] float _edgeCheckDepth = 1f;
 
+    [Header("SFX")]
+    [SerializeField] AudioClip _deathSfx;
+    [SerializeField] AudioSource _audiosource;
+
     State _state = State.Idle;
     Vector3 _dir = Vector3.right;
     float _stateTimer;
@@ -201,6 +205,8 @@ public class Rat : MonoBehaviour, IDamageable
         _isAlive = false;
         if (!_rb.isKinematic) _rb.linearVelocity = Vector3.zero;
         if (_animator != null) _animator.enabled = false;
+        _audiosource.Stop();
+        _audiosource.PlayOneShot(_deathSfx);
     }
 
     void OnDrawGizmosSelected()

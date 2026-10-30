@@ -8,18 +8,37 @@ public class WoodPlank : MonoBehaviour
 
     [Header("Broken Mesh")]
     [SerializeField] GameObject[] _brokenMeshs;
+    [SerializeField] bool _usePhysics = true;
+    [SerializeField] Rigidbody[] _rbs;
+    [SerializeField] GameObject _vfx;
 
     void Awake()
     {
+        _vfx.SetActive(false);
+
+        if (_usePhysics)
+        {
+            ChangePlankSkin();
+            SetKinematic(true);
+            return;
+        }
+
         ShowBrokenParts(false);
     }
 
     void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out IDamageable dmg))
+        if (!other.TryGetComponent(out IDamageable dmg)) return;
+        
+        if(_usePhysics)
         {
-            ChangePlankSkin();
+            SetKinematic(false);
+            _vfx.SetActive(true);
+            return;
         }
+
+        ChangePlankSkin();
+        
     }
 
     void ChangePlankSkin()
@@ -39,6 +58,14 @@ public class WoodPlank : MonoBehaviour
         foreach (var brokenMesh in _brokenMeshs)
         {
             brokenMesh.SetActive(value);
+        }
+    }
+
+    void SetKinematic(bool value)
+    {
+        foreach (var rb in _rbs)
+        {
+            rb.isKinematic = value;
         }
     }
 }

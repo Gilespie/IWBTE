@@ -4,7 +4,6 @@ public class Checkpoint : MonoBehaviour
 {
     [SerializeField] Collider _collider;
 
-    [Tooltip("Индекс главы в LoadScreen, которую открывает этот чекпоинт")]
     [SerializeField] int _chapterIndex = 1;
 
     void OnTriggerEnter(Collider other)
