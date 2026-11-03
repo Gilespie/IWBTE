@@ -13,7 +13,6 @@ public class DroneKamikadze : DronBase
     [Header("Cutscene (Rigidbody only)")]
     [SerializeField] Transform _cutscenePoint;
     [SerializeField] float _cutsceneSpeed = 5f;
-
     Exploder _exploder;
 
     protected override void Awake()

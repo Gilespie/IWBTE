@@ -29,6 +29,9 @@ public class Train : MonoBehaviour
     [SerializeField] float _minBrakeSpeed = 0.3f;
     [SerializeField] float _stopDistance = 0.02f;
 
+    [Header("Anim")]
+    [SerializeField] Animator _animator;
+
     [Header("Events")]
     [SerializeField] UnityEvent _onTripStarted;
     [SerializeField] UnityEvent _onArrived;
@@ -122,7 +125,6 @@ public class Train : MonoBehaviour
             _onLastStationReached?.Invoke();
     }
 
-    /// <summary>UnityEvent -  Send train to the next station.</summary>
     public void StartTrip()
     {
         if (_state != TrainState.Idle) return;

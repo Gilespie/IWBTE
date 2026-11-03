@@ -72,9 +72,11 @@ public class LoadScreen : ScreenBase
 
     void SelectChapter(ChapterData chapter)
     {
+        int index = System.Array.IndexOf(_chapters, chapter);
+
         ScreenManager.Instance.DeactivateAll();
 
-        SaveManager.Instance.StartChapter(chapter.IsStart, chapter.SpawnPosition);
+        SaveManager.Instance.StartChapter(chapter.IsStart, index);
 
         EventManager.Trigger(EventType.OnSceneTransition, chapter.SceneName);
     }

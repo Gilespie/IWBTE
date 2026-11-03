@@ -17,7 +17,7 @@ public class SaveManager : SingletonBase<SaveManager>
     private readonly List<ISaveable> _saveables = new();
 
     public int MaxUnlockedChapter => _progress.Data.MaxUnlockedChapter;
-
+    public static int PendingChapter = -1;
     protected override void Awake()
     {
         base.Awake();
@@ -123,25 +123,41 @@ public class SaveManager : SingletonBase<SaveManager>
 
         _game.Load();
 
-        if (_game.Data.IsNewGame)
+        if (_game.Data.IsNewGame || PendingChapter >= 0)
             return;
 
         foreach (var s in _saveables)
             s.RestoreState(_game.Data);
     }
 
-    public void StartChapter(bool isNewGame, Vector3 spawnPosition)
+    public void StartChapter(bool isNewGame, int chapterIndex)
     {
         IntroSequence.PlayedThisSession = !isNewGame;
+        PendingChapter = isNewGame ? -1 : chapterIndex;
 
         _game.Reset();
 
         SaveGameData d = _game.Data;
         d.IsNewGame = isNewGame;
+        d.IntroPlayed = !isNewGame;
         d.IsAlive = true;
-        d.x = spawnPosition.x;
-        d.y = spawnPosition.y;
-        d.z = spawnPosition.z;
+
+        _game.Save();
+    }
+
+    public void SetSpawnPosition(Vector3 position, string sceneName = null)
+    {
+        PendingChapter = -1;
+
+        SaveGameData d = _game.Data;
+        d.IsNewGame = false;
+        d.IsAlive = true;
+        d.x = position.x;
+        d.y = position.y;
+        d.z = position.z;
+
+        if (!string.IsNullOrEmpty(sceneName))
+            d.СurrentSceneName = sceneName;
 
         _game.Save();
     }

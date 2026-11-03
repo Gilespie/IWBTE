@@ -508,7 +508,11 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
     public void RestoreState(SaveGameData data)
     {
         Vector3 pos = new Vector3(data.x, data.y, data.z);
+
+        _rb.position = pos;
+        _rb.linearVelocity = Vector3.zero;
         transform.position = pos;
+
         _isAlive = data.IsAlive;
     }
 }

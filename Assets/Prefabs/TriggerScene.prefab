@@ -26,11 +26,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6471764359008944429}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -171.25, y: -4.85, z: -3.9}
   m_LocalScale: {x: 2.202224, y: 18.458, z: 18.458}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 2496080421717541138}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &6965415702087859977
@@ -70,4 +71,45 @@ MonoBehaviour:
   _actions:
     m_PersistentCalls:
       m_Calls: []
-  _levelName: Blocking
+  _actionsStay:
+    m_PersistentCalls:
+      m_Calls: []
+  _actionsExit:
+    m_PersistentCalls:
+      m_Calls: []
+  _collider: {fileID: 6965415702087859977}
+  _eventType: 9
+  _levelName: Subway
+  _overrideSpawn: 1
+  _spawnPosition: {fileID: 0}
+--- !u!1 &7964869952930079012
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2496080421717541138}
+  m_Layer: 0
+  m_Name: StartPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2496080421717541138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7964869952930079012}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6831290033775365380}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

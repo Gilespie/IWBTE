@@ -40,6 +40,7 @@ public class CameraPointFollow : MonoBehaviour, ISaveable
     Vector3 _currentLookPoint;
     Vector3 _lookFrom;
     float _lookBlend = 1f;
+    bool _snapPending;
 
     private void Awake()
     {
@@ -69,6 +70,12 @@ public class CameraPointFollow : MonoBehaviour, ISaveable
 
     private void FixedUpdate()
     {
+        if (_snapPending && _target != null)
+        {
+            _snapPending = false;
+            SnapToTarget();
+        }
+
         float dt = Time.deltaTime;
 
         _currentOffset = Vector3.SmoothDamp(
@@ -192,6 +199,11 @@ public class CameraPointFollow : MonoBehaviour, ISaveable
         _offsetVelocity = Vector3.zero;
     }
 
+    public void SnapToTarget()
+    {
+        transform.position = _target.position + _currentOffset;
+    }
+
     public void SnapToFollow()
     {
         _cameraFixedPoint = null;
@@ -268,8 +280,9 @@ public class CameraPointFollow : MonoBehaviour, ISaveable
 
     public void RestoreState(SaveGameData data)
     {
-        if (!data.HasCameraState) return;
+        if (data.HasCameraState)
+            SnapOffset(data.CameraOffset);
 
-        SnapOffset(data.CameraOffset);
+        _snapPending = true;
     }
 }

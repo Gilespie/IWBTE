@@ -7,24 +7,24 @@ public class Earthquake : MonoBehaviour
     [SerializeField] ParticleSystem[] _dusts;
     [SerializeField] float _timeToQuake = 15f;
     [SerializeField] VisualEffect[] _dustVFX;
-    AudioSource _audioSource;
+    [SerializeField] AudioSource _audioSource;
+    [SerializeField] bool _isOnce = false;
+    [SerializeField] bool _isEventTrigger = true;
+
     float _currentTimer = 0f;
     int _randomClipIndex = 0;
     float _randomPitch = 0f;
 
-    void Awake()
-    {
-        _audioSource = GetComponent<AudioSource>();
-    }
-
-    /*void Start()
+    void Start()
     {
         _currentTimer = _timeToQuake;
-        //Shockwaves();
-    }*/
+        Shockwaves();
+    }
 
-   /* void Update()
+    void Update()
     {
+        if (_isOnce) return;
+
         _currentTimer -= Time.deltaTime;
         
         if(_currentTimer < 0f)
@@ -32,13 +32,15 @@ public class Earthquake : MonoBehaviour
             _currentTimer = _timeToQuake;
             Shockwaves();
         }
-    }*/
+    }
 
     public void Shockwaves()
     {
         _randomClipIndex = Random.Range( 0, _clips.Length);
         _randomPitch = Random.Range(0.5f, 1f);
-        //EventManager.Trigger(EventType.OnExplosion);
+
+        if(_isEventTrigger) EventManager.Trigger(EventType.OnExplosion);
+
 
         if (_audioSource != null)
         {
