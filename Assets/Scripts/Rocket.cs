@@ -85,7 +85,7 @@ public class Rocket : MonoBehaviour
 
         foreach (Collider col in colliders)
         {
-            Destructable dest = col.GetComponent<Destructable>();
+            IDamageable dest = col.GetComponent<IDamageable>();
 
             if (dest != null)
             {

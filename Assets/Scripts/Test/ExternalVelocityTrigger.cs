@@ -1,18 +1,20 @@
 using UnityEngine;
 
-public class ParentTrigger : MonoBehaviour
+public class ExternalVelocityTrigger : MonoBehaviour
 {
+    /*[SerializeField] Train _train;
+
     private void OnTriggerEnter(Collider other)
     {
         if(!other.TryGetComponent(out Character character)) return;
 
-        other.transform.SetParent(transform);
+        character.SetExternalVelocity(_train);
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!other.TryGetComponent(out Character character)) return;
 
-        other.transform.SetParent(null);
-    }
+        character.SetExternalVelocity(null);
+    }*/
 }

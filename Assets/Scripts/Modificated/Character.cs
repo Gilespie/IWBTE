@@ -44,7 +44,6 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
     public PushableBox CurrentBox => _currentBox;
     WaterZone _currentWaterZone;
     private IGrabbable _currentGrabbable;
-
     IControllable _currentLever;
     bool _isControllingLever;
 

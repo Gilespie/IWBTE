@@ -76,7 +76,7 @@ public class CameraZone : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (_isTriggerOnce) return;
+        //if (_isTriggerOnce) return;
 
         if (other.TryGetComponent(out Character character))
         {

@@ -42,7 +42,7 @@ public class PointFollower : MonoBehaviour
 
         _currentPosition.z = _zConstant;
 
-        transform.position = Vector3.Lerp(transform.position, _currentPosition, _lerpSpeed * Time.fixedDeltaTime);
+        transform.position = _currentPosition;//Vector3.Lerp(transform.position, _currentPosition, _lerpSpeed * Time.fixedDeltaTime);
     }
 
     private void BobEffect(float speed, float intensity)

@@ -29,9 +29,6 @@ public class Train : MonoBehaviour
     [SerializeField] float _minBrakeSpeed = 0.3f;
     [SerializeField] float _stopDistance = 0.02f;
 
-    [Header("Anim")]
-    [SerializeField] Animator _animator;
-
     [Header("Events")]
     [SerializeField] UnityEvent _onTripStarted;
     [SerializeField] UnityEvent _onArrived;
@@ -44,7 +41,6 @@ public class Train : MonoBehaviour
 
     public bool IsMoving => _state != TrainState.Idle;
     public int CurrentStationIndex => _currentStationIndex;
-    public Vector3 ExternalVelocity => _direction * _currentSpeed;
 
     void Start()
     {
@@ -52,6 +48,7 @@ public class Train : MonoBehaviour
         {
             _currentStationIndex = Mathf.Clamp(_currentStationIndex, 0, _stations.Length - 1);
             _rb.position = _stations[_currentStationIndex].position;
+            Arrive();
         }
     }
 
@@ -141,22 +138,6 @@ public class Train : MonoBehaviour
         _targetStationIndex = next;
         _state = TrainState.Accelerating;
         _onTripStarted?.Invoke();
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        Character character = other.GetComponentInParent<Character>();
-
-        if (character != null)
-            character.transform.SetParent(transform);
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        Character character = other.GetComponentInParent<Character>();
-
-        if (character != null)
-            character.transform.SetParent(null);
     }
 
     void ChangePitch()
