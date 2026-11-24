@@ -141,17 +141,27 @@ MonoBehaviour:
   m_GameObject: {fileID: 6048697332106977812}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62c7997267fce104e8d2cdc158f33a18, type: 3}
+  m_Script: {fileID: 11500000, guid: 77074c7ac8e597f47b7686c8b23a8457, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _target: {fileID: 0}
   _lookTarget: {fileID: 0}
-  _offset: {x: 0, y: 2.3, z: -8.5}
-  _moveMode: 0
-  _lerpRate: 5
-  _moveTowardsRate: 3
+  _offset: {x: 0, y: 0, z: 0}
+  _lerpRate: 3
+  _introFollowRate: 0.8
+  _introLookDelay: 5
+  _offsetSmoothTime: 1
+  _rotationRate: 5
+  _lookSmoothTime: 0.7
   _filter: {fileID: 0}
-  _audioSource: {fileID: 6197824048934385541}
+  _audioSource: {fileID: 0}
+  _limitPitch: 1
+  _minPitch: -10
+  _maxPitch: 20
+  _baseZ: -5
+  _isBobEnable: 1
+  _bobSpeed: 3.5
+  _bobIntensity: 0.05
 --- !u!135 &2446991559553476276
 SphereCollider:
   m_ObjectHideFlags: 0

@@ -14,11 +14,6 @@ public class PointFollower : MonoBehaviour
     private Vector3 _bobOffset;
     private Vector3 _currentPosition;
 
-    private void Awake()
-    {
-        GameManager.Instance.PointFollower = this;
-    }
-
     void Start()
     {
         _player = GameManager.Instance.Player;
@@ -42,7 +37,12 @@ public class PointFollower : MonoBehaviour
 
         _currentPosition.z = _zConstant;
 
-        transform.position = _currentPosition;//Vector3.Lerp(transform.position, _currentPosition, _lerpSpeed * Time.fixedDeltaTime);
+        transform.position = _currentPosition;
+    }
+
+    public void SetZOffset(float zOffset)
+    {
+        _zConstant = zOffset;
     }
 
     private void BobEffect(float speed, float intensity)

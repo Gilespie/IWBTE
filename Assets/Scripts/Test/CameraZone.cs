@@ -3,7 +3,7 @@
 [RequireComponent(typeof(BoxCollider))]
 public class CameraZone : MonoBehaviour
 {
-    [SerializeField] CameraPointFollow _camera;
+    [SerializeField] CameraFollow _camera;
 
     [Header("Override Position")]
     [SerializeField] Transform _overridePositionPoint;
@@ -19,6 +19,7 @@ public class CameraZone : MonoBehaviour
 
     [Header("Camera Offset")]
     [SerializeField] bool _overrideCameraOffset = false;
+    [SerializeField] bool _makeOffsetPermanent = false;
     [SerializeField] Vector3 _offset;
     [Tooltip("Time to smooth the camera offset. -1 = keep current camera value")]
     [SerializeField] float _offsetSmoothTime = 1f;
@@ -57,7 +58,10 @@ public class CameraZone : MonoBehaviour
 
         if (_overrideCameraOffset)
         {
-            _camera.SetCameraOffset(_offset, _offsetSmoothTime);
+            if (_makeOffsetPermanent)
+                _camera.SetDefaultCameraOffset(_offset, _offsetSmoothTime);
+            else
+                _camera.SetCameraOffset(_offset, _offsetSmoothTime);
         }
 
         if (_overrideFollowRate)
@@ -76,7 +80,7 @@ public class CameraZone : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        //if (_isTriggerOnce) return;
+        if (_isTriggerOnce) return;
 
         if (other.TryGetComponent(out Character character))
         {
