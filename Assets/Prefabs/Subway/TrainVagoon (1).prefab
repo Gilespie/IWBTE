@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7563551315858318852}
   - component: {fileID: 7888832494899373771}
   - component: {fileID: 2783567730822899340}
+  - component: {fileID: 4570040638011336219}
   m_Layer: 0
   m_Name: TrainDoors6_polySurface1_polySurfaceShape1
   m_TagString: Untagged
@@ -27,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 141948804858405166}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0000001267615, y: 0.00000011481679, z: -0.4768327}
+  m_LocalPosition: {x: 0.0000001267615, y: 0.00000011481679, z: -1.154}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -87,6 +88,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4570040638011336219
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141948804858405166}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.044726558, y: 2.4262762, z: 0.9536651}
+  m_Center: {x: -0.000027051196, y: -0.00000011920929, z: 0.0000001490116}
 --- !u!1 &273397123635413212
 GameObject:
   m_ObjectHideFlags: 0
@@ -184,6 +206,7 @@ GameObject:
   - component: {fileID: 2232002359477941261}
   - component: {fileID: 4874412638167597586}
   - component: {fileID: 3017152497356925279}
+  - component: {fileID: 2633606490737335955}
   m_Layer: 0
   m_Name: TrainDoors2_polySurface2_polySurfaceShape2
   m_TagString: Untagged
@@ -200,7 +223,7 @@ Transform:
   m_GameObject: {fileID: 380302900881093956}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.29023138, y: -0.000000013168328, z: -0.000000030324873}
+  m_LocalPosition: {x: -0.29023138, y: -0.00000001316833, z: -0.00000003032487}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -260,6 +283,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2633606490737335955
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 380302900881093956}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5804687, y: 1.85815, z: 0.034220576}
+  m_Center: {x: -0.000019177793, y: -0.0000006854534, z: -0.00000035762787}
 --- !u!1 &1245222584427106886
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,6 +315,7 @@ GameObject:
   - component: {fileID: 7361234853084523943}
   - component: {fileID: 4674945771410379857}
   - component: {fileID: 2687805591254138666}
+  - component: {fileID: 5951361154617550022}
   m_Layer: 0
   m_Name: TrainSit10
   m_TagString: Untagged
@@ -346,6 +391,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &5951361154617550022
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245222584427106886}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -4743004559729033041, guid: 8298f292f3b90b643828cca571401243, type: 3}
 --- !u!1 &1248623226919865746
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,6 +457,7 @@ GameObject:
   - component: {fileID: 4363833729838570438}
   - component: {fileID: 1397372388385895905}
   - component: {fileID: 6627900003660024893}
+  - component: {fileID: 5599325459042028552}
   m_Layer: 0
   m_Name: TrainDoors3_polySurface1_polySurfaceShape1
   m_TagString: Untagged
@@ -466,6 +534,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &5599325459042028552
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424185948578716881}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.58050776, y: 1.85815, z: 0.034221034}
+  m_Center: {x: 0.0000065565105, y: -0.000000923872, z: -0.00000019744037}
 --- !u!1 &2031858142300807356
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,6 +566,7 @@ GameObject:
   - component: {fileID: 5269805824198561895}
   - component: {fileID: 8284433228910174211}
   - component: {fileID: 2862647219901621762}
+  - component: {fileID: 6352995260586346986}
   m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
@@ -499,6 +589,8 @@ Transform:
   m_Children:
   - {fileID: 7612890036939054823}
   - {fileID: 7361234853084523943}
+  - {fileID: 1192898789125631587}
+  - {fileID: 891754200492504110}
   m_Father: {fileID: 8049748293674635101}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8284433228910174211
@@ -554,6 +646,28 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &6352995260586346986
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2031858142300807356}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8089699231438940418, guid: 8298f292f3b90b643828cca571401243, type: 3}
 --- !u!1 &2218635452103760873
 GameObject:
   m_ObjectHideFlags: 0
@@ -598,6 +712,7 @@ GameObject:
   - component: {fileID: 6267582647019872262}
   - component: {fileID: 4679388571046098294}
   - component: {fileID: 7362118622759610034}
+  - component: {fileID: 1891803831995751202}
   m_Layer: 0
   m_Name: TrainDoors1_polySurface1_polySurfaceShape1
   m_TagString: Untagged
@@ -614,7 +729,7 @@ Transform:
   m_GameObject: {fileID: 2668151675043140640}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.29023138, y: -0.000000013168328, z: -0.000000030324873}
+  m_LocalPosition: {x: 0.29023138, y: -0.00000001316833, z: -0.00000003032487}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -674,6 +789,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1891803831995751202
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2668151675043140640}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5804687, y: 1.85815, z: 0.034221187}
+  m_Center: {x: -0.00002209842, y: -0.0000006854534, z: -0.0000006631017}
 --- !u!1 &2998477794521037919
 GameObject:
   m_ObjectHideFlags: 0
@@ -718,6 +854,7 @@ GameObject:
   - component: {fileID: 780885966754893954}
   - component: {fileID: 3158400906891103156}
   - component: {fileID: 3024080640307422125}
+  - component: {fileID: 2643780214651019403}
   m_Layer: 0
   m_Name: TrainDoors4_polySurface1_polySurfaceShape1
   m_TagString: Untagged
@@ -734,7 +871,7 @@ Transform:
   m_GameObject: {fileID: 3470906095465124010}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.29023126, y: -0.000000010578319, z: -0.007948709}
+  m_LocalPosition: {x: 0.29023126, y: -0.00000001057832, z: -0.007948709}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -794,6 +931,148 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2643780214651019403
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3470906095465124010}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5805077, y: 1.85815, z: 0.03422088}
+  m_Center: {x: 0.000006958842, y: -0.000000923872, z: 0.00000018440186}
+--- !u!1 &3842998507127156638
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1192898789125631587}
+  - component: {fileID: 9155074585140317428}
+  - component: {fileID: 4263070174924928524}
+  m_Layer: 0
+  m_Name: Point Light (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1192898789125631587
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3842998507127156638}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 432.37, y: -5.8546534, z: 4.2319026}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5269805824198561895}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!108 &9155074585140317428
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3842998507127156638}
+  m_Enabled: 1
+  serializedVersion: 11
+  m_Type: 2
+  m_Color: {r: 0.98759776, g: 1, b: 0.6745283, a: 1}
+  m_Intensity: 10
+  m_Range: 30
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 2
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
+--- !u!114 &4263070174924928524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3842998507127156638}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 0
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &3903473658788435619
 GameObject:
   m_ObjectHideFlags: 0
@@ -805,6 +1084,7 @@ GameObject:
   - component: {fileID: 6377077206132180931}
   - component: {fileID: 6996787617427214090}
   - component: {fileID: 6822475466412726403}
+  - component: {fileID: 4315884015565691056}
   m_Layer: 0
   m_Name: TrainDoors2_polySurface1_polySurfaceShape1
   m_TagString: Untagged
@@ -821,7 +1101,7 @@ Transform:
   m_GameObject: {fileID: 3903473658788435619}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.29023114, y: -0.000000013168328, z: -0.000000030324873}
+  m_LocalPosition: {x: 0.29023114, y: -0.00000001316833, z: -0.00000003032487}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -881,6 +1161,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &4315884015565691056
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3903473658788435619}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5804687, y: 1.85815, z: 0.034220576}
+  m_Center: {x: -0.0000129789105, y: -0.0000006854534, z: -0.00000035762787}
 --- !u!1 &4353230942030622726
 GameObject:
   m_ObjectHideFlags: 0
@@ -958,6 +1259,7 @@ GameObject:
   - component: {fileID: 6817263054386019688}
   - component: {fileID: 1009123120637562186}
   - component: {fileID: 3810693609136021420}
+  - component: {fileID: 2191150420014266404}
   m_Layer: 0
   m_Name: TrainDoors5_polySurface2_polySurfaceShape2
   m_TagString: Untagged
@@ -974,7 +1276,7 @@ Transform:
   m_GameObject: {fileID: 4869671163306830656}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.000000060053424, y: -0.00000019592682, z: 0.4768327}
+  m_LocalPosition: {x: -0.000000060053424, y: -0.00000019592682, z: 1.257}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1034,6 +1336,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2191150420014266404
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4869671163306830656}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.044726558, y: 2.4262762, z: 0.95366603}
+  m_Center: {x: -0.00004626438, y: 0.00000023841858, z: 0.0000000745058}
 --- !u!1 &4907661544907782984
 GameObject:
   m_ObjectHideFlags: 0
@@ -1196,6 +1519,7 @@ GameObject:
   - component: {fileID: 4748165328730068355}
   - component: {fileID: 2445083549492052844}
   - component: {fileID: 8852522819718155343}
+  - component: {fileID: 2255366655484216083}
   m_Layer: 0
   m_Name: TrainDoors6_polySurface2_polySurfaceShape2
   m_TagString: Untagged
@@ -1212,7 +1536,7 @@ Transform:
   m_GameObject: {fileID: 5812758102598638354}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.0000001267615, y: -0.00000019592682, z: 0.48801607}
+  m_LocalPosition: {x: 0.0000001267615, y: -0.00000019592682, z: 1.314}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1272,6 +1596,148 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2255366655484216083
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5812758102598638354}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.044726558, y: 2.4262762, z: 0.9536651}
+  m_Center: {x: -0.000027051196, y: 0.00000023841858, z: -0.00000008940697}
+--- !u!1 &5886282494764136723
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 891754200492504110}
+  - component: {fileID: 2884362422910855397}
+  - component: {fileID: 8671274377156130106}
+  m_Layer: 0
+  m_Name: Point Light (3)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &891754200492504110
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5886282494764136723}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 438.76996, y: -5.8546534, z: 4.2319026}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5269805824198561895}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!108 &2884362422910855397
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5886282494764136723}
+  m_Enabled: 1
+  serializedVersion: 11
+  m_Type: 2
+  m_Color: {r: 0.98759776, g: 1, b: 0.6745283, a: 1}
+  m_Intensity: 10
+  m_Range: 30
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 2
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
+--- !u!114 &8671274377156130106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5886282494764136723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 0
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1 &6040271797577565755
 GameObject:
   m_ObjectHideFlags: 0
@@ -1283,6 +1749,7 @@ GameObject:
   - component: {fileID: 4936625240278105812}
   - component: {fileID: 7332769136260309552}
   - component: {fileID: 1531160710424460448}
+  - component: {fileID: 1314550522048045156}
   m_Layer: 0
   m_Name: TrainDoors1_polySurface2_polySurfaceShape2
   m_TagString: Untagged
@@ -1299,7 +1766,7 @@ Transform:
   m_GameObject: {fileID: 6040271797577565755}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.29023117, y: -0.000000013168328, z: -0.000000030324873}
+  m_LocalPosition: {x: -0.29023117, y: -0.00000001316833, z: -0.00000003032487}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1359,6 +1826,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1314550522048045156
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6040271797577565755}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.58050776, y: 1.85815, z: 0.034221187}
+  m_Center: {x: -0.00003927946, y: -0.0000006854534, z: -0.0000006631017}
 --- !u!1 &6071389621509216852
 GameObject:
   m_ObjectHideFlags: 0
@@ -1407,6 +1895,7 @@ GameObject:
   - component: {fileID: 3656412367085767522}
   - component: {fileID: 1562878733220840530}
   - component: {fileID: 3108756587566972600}
+  - component: {fileID: 8057519645479485250}
   m_Layer: 0
   m_Name: TrainDoors3_polySurface2_polySurfaceShape2
   m_TagString: Untagged
@@ -1483,6 +1972,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8057519645479485250
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6671437837033374227}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5805077, y: 1.85815, z: 0.034221034}
+  m_Center: {x: 0.00000034272668, y: -0.000000923872, z: -0.00000019744037}
 --- !u!1 &6811307584952238783
 GameObject:
   m_ObjectHideFlags: 0
@@ -1494,6 +2004,7 @@ GameObject:
   - component: {fileID: 9150098366427022708}
   - component: {fileID: 5597884648922273821}
   - component: {fileID: 5415610162670504139}
+  - component: {fileID: 6271635920176189302}
   m_Layer: 0
   m_Name: TrainDoors5_polySurface1_polySurfaceShape1
   m_TagString: Untagged
@@ -1510,7 +2021,7 @@ Transform:
   m_GameObject: {fileID: 6811307584952238783}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.000000060053424, y: 0.00000011481679, z: -0.49102893}
+  m_LocalPosition: {x: -0.000000060053424, y: 0.00000011481679, z: -1.226}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1570,6 +2081,27 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6271635920176189302
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6811307584952238783}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.044726558, y: 2.4262762, z: 0.9536657}
+  m_Center: {x: -0.00004626438, y: -0.00000011920929, z: -0.0000000745058}
 --- !u!1 &6931448980640532314
 GameObject:
   m_ObjectHideFlags: 0
@@ -1594,9 +2126,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6931448980640532314}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 532.6562, y: 12.529414, z: 21.231909}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.85, y: 1, z: 0.85}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5269805824198561895}
@@ -2050,6 +2582,7 @@ GameObject:
   - component: {fileID: 6365551044622405598}
   - component: {fileID: 3248320902871549766}
   - component: {fileID: 8308155437973726674}
+  - component: {fileID: 8154945041464913158}
   m_Layer: 0
   m_Name: TrainDoors4_polySurface2_polySurfaceShape2
   m_TagString: Untagged
@@ -2066,7 +2599,7 @@ Transform:
   m_GameObject: {fileID: 9067939267635820317}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.29023126, y: -0.000000010578319, z: -0.007948709}
+  m_LocalPosition: {x: -0.29023126, y: -0.00000001057832, z: -0.007948709}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2126,3 +2659,24 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &8154945041464913158
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9067939267635820317}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.5804687, y: 1.85815, z: 0.03422088}
+  m_Center: {x: 0.000020280479, y: -0.000000923872, z: 0.00000018440186}

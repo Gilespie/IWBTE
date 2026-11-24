@@ -14,7 +14,6 @@ public class Train : MonoBehaviour
     [Header("References")]
     [SerializeField] Rigidbody _rb;
     [SerializeField] AudioSource _audioSource;
-    [SerializeField] AudioClip _trainSound;
 
     [Header("Stations")]
     [SerializeField] Transform[] _stations;
