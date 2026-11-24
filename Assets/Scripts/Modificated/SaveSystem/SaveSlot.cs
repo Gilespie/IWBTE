@@ -37,4 +37,12 @@ public class SaveSlot<T> where T : new()
     }
 
     public void Reset() => Data = new T();
+
+    public void Delete()
+    {
+        if (File.Exists(_path))
+            File.Delete(_path);
+
+        Data = new T();
+    }
 }

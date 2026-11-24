@@ -157,8 +157,19 @@ public class SaveManager : SingletonBase<SaveManager>
         d.z = position.z;
 
         if (!string.IsNullOrEmpty(sceneName))
-            d.СurrentSceneName = sceneName;
+            d.CurrentSceneName = sceneName;
 
         _game.Save();
+    }
+
+    public void DeleteGameSave()
+    {
+        IntroSequence.PlayedThisSession = false;
+        PendingChapter = -1;
+
+        if (GameManager.Instance != null)
+            GameManager.Instance.ActualCheckpoint = Vector3.zero;
+
+        _game.Delete();
     }
 }

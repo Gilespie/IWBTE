@@ -7,7 +7,7 @@ public class IntroSequence : MonoBehaviour, ISaveable
     public static bool PlayedThisSession;
 
     [Header("References")]
-    [SerializeField] CameraPointFollow _camera;
+    [SerializeField] CameraFollow _camera;
     [SerializeField] CharacterInputController _input;
     [SerializeField] Airplane _airplane;
     [SerializeField] Animator _celularAnimator;

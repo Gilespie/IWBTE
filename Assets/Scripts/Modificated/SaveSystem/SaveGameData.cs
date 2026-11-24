@@ -7,7 +7,7 @@ public class SaveGameData
     public float y;
     public float z;
     public bool IsAlive;
-    public string СurrentSceneName; 
+    public string CurrentSceneName;
     public bool IsNewGame;
     public bool IntroPlayed;
 
