@@ -10,6 +10,6 @@ public class SettingsData
     public float VoiceVolume = 0.5f;
     public float SFXVolume = 0.5f;
     public float UIVolume = 0.2f;
-
+    public int BrightnessIndex = 4;
     public string InputBindingsOverridesJson = "";
 }

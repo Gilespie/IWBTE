@@ -8,6 +8,7 @@ public class SettingsMenu : MonoBehaviour
     [SerializeField] private OptionSelector _qualitySelector;
     [SerializeField] private OptionSelector _vSyncSelector;
     [SerializeField] private OptionSelector _fullscreenSelector;
+    [SerializeField] private OptionSelector _brightnessSelector;
     [SerializeField] private List<Resolution> _resolutions = new();
 
     void Awake()
@@ -16,12 +17,13 @@ public class SettingsMenu : MonoBehaviour
         InitQualitySelector();
         InitVSyncSelector();
         InitFullscreenSelector();
+        InitBrightnessSelector();
 
         _resolutionSelector.OnValueChanged += ChangeResolution;
         _qualitySelector.OnValueChanged += ChangeQuality;
         _vSyncSelector.OnValueChanged += ChangeVSync;
         _fullscreenSelector.OnValueChanged += ChangeFullscreen;
-
+        _brightnessSelector.OnValueChanged += ChangeBrightness;
     }
 
     private void OnDestroy()
@@ -30,6 +32,7 @@ public class SettingsMenu : MonoBehaviour
         _qualitySelector.OnValueChanged -= ChangeQuality;
         _vSyncSelector.OnValueChanged -= ChangeVSync;
         _fullscreenSelector.OnValueChanged -= ChangeFullscreen;
+        _brightnessSelector.OnValueChanged -= ChangeBrightness;
     }
 
     void InitResolutionSelector()
@@ -78,9 +81,21 @@ public class SettingsMenu : MonoBehaviour
         _fullscreenSelector.Initialize(new List<string>{"OFF", "ON"}, SaveManager.Instance.Settings.Fullscreen ? 1 : 0);
     }
 
-    void InitVolume()
+    void InitBrightnessSelector()
     {
+        List<string> values = new();
 
+        for (int i = 0; i < BrightnessController.StepsCount; i++)
+            values.Add(BrightnessController.IndexToExposure(i).ToString("+0.0;-0.0;0.0"));
+
+        _brightnessSelector.Initialize(values, SaveManager.Instance.Settings.BrightnessIndex);
+    }
+
+    void ChangeBrightness(int index)
+    {
+        SaveManager.Instance.Settings.BrightnessIndex = index;
+        BrightnessController.Raise(index);
+        SaveManager.Instance.SaveSettings();
     }
 
     void ChangeResolution(int index)
@@ -118,10 +133,5 @@ public class SettingsMenu : MonoBehaviour
 
         SaveManager.Instance.Apply();
         SaveManager.Instance.SaveSettings();
-    }
-
-    void ChangeVolume(int value)
-    {
-
     }
 }
