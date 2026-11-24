@@ -23,7 +23,7 @@ public class DroneKamikadze : DronBase
         if (_isCutsceneDrone)
         {
             if (_agent != null) _agent.enabled = false;
-            _rb.isKinematic = true;
+            //_rb.isKinematic = true;
         }
     }
 
@@ -80,5 +80,14 @@ public class DroneKamikadze : DronBase
         HandleBeepSound(_cutscenePoint);
     }
 
-    public void SetCutscenePoint(Transform point) => _cutscenePoint = point;
+    public void StartCutscene()
+    {
+        _isCutsceneDrone = true;
+
+        if (_agent != null) _agent.enabled = false;
+        //_rb.isKinematic = true;
+
+        _state = DroneStates.Chase;
+        SetLightColor(_chaseColor);
+    }
 }
