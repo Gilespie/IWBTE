@@ -3,12 +3,13 @@ using UnityEngine;
 public class CharacterRotator : MonoBehaviour
 {
     [Header("Rotation")]
-    [SerializeField] private float _speedRot = 10f;
-    [SerializeField] private Transform _mesh;
+    [SerializeField] float _speedRot = 10f;
+    [SerializeField] Transform _mesh;
     public Transform Mesh => _mesh;
-    private GroundRaycast _groundRaycast;
+    GroundRaycast _groundRaycast;
     bool _isActive = true;
-    private Vector3 _lastSwimForward = Vector3.forward;
+    Vector3 _lastSwimForward = Vector3.forward;
+    Vector3 _lastFlatForward = Vector3.forward;
 
     public void Initialize(GroundRaycast groundRaycast)
     {
@@ -34,10 +35,16 @@ public class CharacterRotator : MonoBehaviour
         dir.y = 0f;
 
         if (dir.sqrMagnitude < 0.0001f)
-            return;
+        {
+            dir = Vector3.ProjectOnPlane(_mesh.forward, Vector3.up);
 
-        Quaternion targetRotation = Quaternion.LookRotation(dir);
+            if (dir.sqrMagnitude < 0.0001f)
+                dir = _lastFlatForward; 
+        }
 
+        _lastFlatForward = dir.normalized;
+
+        Quaternion targetRotation = Quaternion.LookRotation(dir, Vector3.up);
         _mesh.rotation = Quaternion.Slerp(_mesh.rotation, targetRotation, _speedRot * Time.fixedDeltaTime);
     }
 
