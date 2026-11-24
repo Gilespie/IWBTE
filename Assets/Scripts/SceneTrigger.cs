@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class SceneTrigger : Trigger
 {
@@ -11,7 +12,7 @@ public class SceneTrigger : Trigger
 
     protected override void OnTriggerEnter(Collider other)
     {
-        if (!other.TryGetComponent<Character>(out _)) return;
+        if (!other.TryGetComponent<Character>(out var character) || !character.IsAlive) return;
 
         base.OnTriggerEnter(other);
 

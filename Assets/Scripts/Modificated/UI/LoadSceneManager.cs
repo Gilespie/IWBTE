@@ -38,9 +38,10 @@ public class LoadSceneManager : SingletonBase<LoadSceneManager>
 
     public void RestartGame(params object[] args)
     {
-        string currentLevelname = SceneManager.GetActiveScene().name;
+        string current = SceneManager.GetActiveScene().name;
+        string target = SaveManager.Instance.GetRespawnScene(current);
 
-        LoadScene(currentLevelname);
+        LoadScene(target);
     }
 
     IEnumerator LoadSceneAsync(string sceneName)

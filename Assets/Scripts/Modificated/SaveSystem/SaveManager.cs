@@ -46,10 +46,40 @@ public class SaveManager : SingletonBase<SaveManager>
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
+    public string GetRespawnScene(string fallback)
+    {
+        if (_game.Exists) _game.Load();
+
+        var d = _game.Data;
+
+        if (d.IsNewGame || string.IsNullOrEmpty(d.CurrentSceneName))
+            return fallback;
+
+        return d.CurrentSceneName;
+    }
+
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         if (mode == LoadSceneMode.Single)
-            LoadGame();
+            LoadGame(scene.name);
+    }
+
+    public void LoadGame(string loadedSceneName)
+    {
+        if (!_game.Exists)
+            return;
+
+        _game.Load();
+
+        if (_game.Data.IsNewGame || PendingChapter >= 0)
+            return;
+
+        if (!string.IsNullOrEmpty(_game.Data.CurrentSceneName) &&
+            _game.Data.CurrentSceneName != loadedSceneName)
+            return;
+
+        foreach (var s in _saveables)
+            s.RestoreState(_game.Data);
     }
 
     private void HandleCheckpoint(params object[] args)
