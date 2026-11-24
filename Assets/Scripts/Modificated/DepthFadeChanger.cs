@@ -7,24 +7,42 @@ public class DepthFadeChanger : MonoBehaviour
     [SerializeField] Color _colorNight;
     [SerializeField] bool _isNight;
 
-    private void Awake()
+    [SerializeField] float _distanceDay = 0.5f;
+    [SerializeField] float _distanceNight = 0.5f;
+    static readonly int MaxDistanceID =
+        Shader.PropertyToID("_MaxDistance");
+
+    void Awake()
     {
         ChangeColorFade(_isNight);
     }
 
-    private void OnDisable()
+    void OnDisable()
     {
         _mat.color = _colorDay;
+        _mat.SetFloat(MaxDistanceID, _distanceDay);
     }
 
-    private void OnApplicationQuit()
+    void OnApplicationQuit()
     {
         _mat.color = _colorDay;
+        _mat.SetFloat(MaxDistanceID, _distanceDay);
     }
 
-    void ChangeColorFade(bool isNight)
+    public void ChangeColorFade(bool isNight)
     {
         _isNight = isNight;
+
         _mat.color = _isNight ? _colorNight : _colorDay;
+
+        _mat.SetFloat(
+            MaxDistanceID,
+            _isNight ? _distanceNight : _distanceDay
+        );
+    }
+
+    public void SetMaxDistance(float distance)
+    {
+        _mat.SetFloat(MaxDistanceID, distance);
     }
 }

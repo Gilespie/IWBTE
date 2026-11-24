@@ -9,7 +9,7 @@ public class SubteDeadZone : MonoBehaviour
     {
         if (!other.TryGetComponent(out IDamageable damageable)) return;
 
-        damageable.InstantKill();
         OnEntered?.Invoke();
+        damageable.InstantKill();
     }
 }
