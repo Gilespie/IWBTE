@@ -3,7 +3,6 @@ using UnityEngine.InputSystem;
 
 public class SkipLogo : MonoBehaviour
 {
-    [SerializeField] KeyCode _skipLogoKey;
     [SerializeField] string _levelName;
     bool _isSkipped = false;
     InputsActions _inputActions;
