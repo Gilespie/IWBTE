@@ -54,6 +54,15 @@ public class DronBase : MonoBehaviour
     [Header("Targeting")]
     [SerializeField] LayerMask _targetMask;
     [SerializeField] float _scanInterval = 0.2f;
+
+    [Header("Unreachable target")]
+    [SerializeField] float _closestSearchRadius = 20f;
+    [SerializeField] Vector2 _unreachableWaitRange = new Vector2(1f, 2f);
+    [SerializeField] float _giveUpCooldown = 4f;
+    bool _isWaitingUnreachable;
+    float _unreachableTimer;
+    float _ignoreTargetUntil;
+
     readonly Collider[] _scanBuffer = new Collider[16];
     Quaternion _defaultRotation;
     float _scanTimer;
@@ -110,13 +119,14 @@ public class DronBase : MonoBehaviour
     protected virtual void FixedUpdate()
     {
         _scanTimer -= Time.fixedDeltaTime;
+
         if (_scanTimer <= 0f)
         {
             _scanTimer = _scanInterval;
             AcquireTarget();
         }
 
-        _seesTarget = CanSeeTarget(_target);
+        _seesTarget = Time.time >= _ignoreTargetUntil && CanSeeTarget(_target);
 
         UpdateState();
         MoveToTarget();
@@ -199,6 +209,7 @@ public class DronBase : MonoBehaviour
 
     void EnterChase()
     {
+        _isWaitingUnreachable = false;
         _state = DroneStates.Chase;
         SetLightColor(_chaseColor);
         OnEnterChase();
@@ -206,6 +217,7 @@ public class DronBase : MonoBehaviour
 
     void EnterInvestigate()
     {
+        _isWaitingUnreachable = false;
         _state = DroneStates.Investigate;
         _currentTarget = _lastSeenPosition;
         SetLightColor(_searchColor);
@@ -214,6 +226,7 @@ public class DronBase : MonoBehaviour
 
     void EnterPatrol()
     {
+        _isWaitingUnreachable = false;
         _state = DroneStates.Patrol;
         _lastSeenPosition = Vector3.zero;
         _currentTarget = GetNextTarget();
@@ -223,6 +236,7 @@ public class DronBase : MonoBehaviour
 
     void EnterIdle()
     {
+        _isWaitingUnreachable = false;
         _state = DroneStates.Idle;
         if (_agent.enabled && _agent.isOnNavMesh) _agent.ResetPath();
         _lastDestination = Vector3.positiveInfinity;
@@ -270,10 +284,11 @@ public class DronBase : MonoBehaviour
 
         if (hold)
         {
+            _isWaitingUnreachable = false;
             _agent.isStopped = true;
 
             if (ShouldHoldPosition()) RotateTowards(_currentTarget, _rotationSpeed);
-            else RotateToDefault(_returnRotationSpeed);  
+            else RotateToDefault(_returnRotationSpeed);
             return;
         }
 
@@ -283,7 +298,10 @@ public class DronBase : MonoBehaviour
         SetDestination(_currentTarget);
         UpdateRotation();
 
-        if (_state == DroneStates.Patrol) PatrolWait();
+        if (_state == DroneStates.Patrol)
+            PatrolWait();
+        else if (_state == DroneStates.Chase || _state == DroneStates.Investigate)
+            HandleUnreachable();
     }
     void UpdateRotation()
     {
@@ -310,7 +328,8 @@ public class DronBase : MonoBehaviour
     {
         if ((point - _lastDestination).sqrMagnitude < 0.25f) return;
 
-        if (NavMesh.SamplePosition(point, out NavMeshHit hit, _sampleRadius, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(point, out NavMeshHit hit, _sampleRadius, NavMesh.AllAreas) ||
+            NavMesh.SamplePosition(point, out hit, _closestSearchRadius, NavMesh.AllAreas))
         {
             _lastDestination = point;
             _agent.SetDestination(hit.position);
@@ -396,5 +415,48 @@ public class DronBase : MonoBehaviour
         _target = target;
         _currentTargetDamageable = damageable;
         _targetAim = new AimTargetStruct(_target);
+    }
+
+    bool ReachedPathEnd()
+    {
+        if (_agent.pathPending) return false;
+        if (_agent.pathStatus == NavMeshPathStatus.PathInvalid) return true;
+        return _agent.remainingDistance <= _agent.stoppingDistance + 0.2f;
+    }
+
+    void HandleUnreachable()
+    {
+        bool stuck = ReachedPathEnd() && !IsNear(_currentTarget);
+
+        if (!stuck)
+        {
+            _isWaitingUnreachable = false;
+            return;
+        }
+
+        if (!_isWaitingUnreachable)
+        {
+            _isWaitingUnreachable = true;
+            _unreachableTimer = Random.Range(_unreachableWaitRange.x, _unreachableWaitRange.y);
+            return;
+        }
+
+        _unreachableTimer -= Time.fixedDeltaTime;
+
+        if (_unreachableTimer <= 0f)
+            GiveUp();
+    }
+
+    void GiveUp()
+    {
+        _isWaitingUnreachable = false;
+        _waiting = false;
+        _ignoreTargetUntil = Time.time + _giveUpCooldown;
+        _seesTarget = false;
+        _lastSeenPosition = Vector3.zero;
+        _lastDestination = Vector3.positiveInfinity;
+
+        if (_startIdle) EnterIdle();
+        else EnterPatrol();
     }
 }

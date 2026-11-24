@@ -501,7 +501,7 @@ public class Character : MonoBehaviour, IDamageable, ISaveable
         data.y = transform.position.y;
         data.z = transform.position.z;
         data.IsAlive = _isAlive;
-        data.СurrentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+        data.CurrentSceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
     }
 
     public void RestoreState(SaveGameData data)
