@@ -331836,6 +331836,11 @@ PrefabInstance:
       objectReference: {fileID: 7604493035383091591}
     - target: {fileID: 4000957981982016077, guid: 05ca17cc528935648b413cd3fef4693c,
         type: 3}
+      propertyPath: _bobSpeed
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4000957981982016077, guid: 05ca17cc528935648b413cd3fef4693c,
+        type: 3}
       propertyPath: _maxPitch
       value: 10
       objectReference: {fileID: 0}
